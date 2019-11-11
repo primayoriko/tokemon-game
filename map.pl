@@ -6,15 +6,17 @@ dynamic :- (posisiGym/2).
 dynamic :- (rintangan/2).
 
 :- include('move.pl').
+:- include('init.pl').
 
 init_map :-
     random(10,50,X),
     random(10,50,Y),
-    random(11,49,XGym),
-    random(11,49,YGym),
+    random(1,X,XGym),
+    random(1,Y,YGym),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
     asserta(posisiXGym(XGym,YGym)),
+    asserta(player_position(1,1)),
     generateRintangan,
     !.
     
@@ -69,9 +71,9 @@ printMap(_,_) :-
 generateRintangan :-
     lebarPeta(X),
     tinggiPeta(Y),
-    XMin is 1,
+    XMin is 2,
 	XMax is X,
-	YMin is 1,
+	YMin is 2,
     YMax is Y,
     Sum is X*Y/10,
         
