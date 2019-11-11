@@ -1,5 +1,4 @@
-:- include('init.pl').
-:- include('map.pl').
+:- include('move.pl').
 
 start :-
 	game_status(mulai),
