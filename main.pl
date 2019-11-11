@@ -1,3 +1,6 @@
+:- include('init.pl').
+:- include('map.pl').
+
 start :-
 	game_status(mulai),
 	write('Game sudah dimulai!'),nl,
@@ -17,8 +20,6 @@ start :-
 	init_map,
 	retract(game_status(_)), asserta(game_status(mulai)),
 	!.
-
-
 
 help :-
 	write('Daftar Command : '),nl,
