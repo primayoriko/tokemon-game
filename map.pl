@@ -1,12 +1,9 @@
-
+:- include('init.pl').
 
 dynamic :- (lebarPeta/1).
 dynamic :- (tinggiPeta/1).
 dynamic :- (posisiGym/2).
 dynamic :- (rintangan/2).
-
-:- include('move.pl').
-:- include('init.pl').
 
 init_map :-
     random(10,50,X),
