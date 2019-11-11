@@ -27,7 +27,31 @@ status :-
 	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
 	
-status :- !.
+status :- 
+	write('Stat/Inventori:         '), nl,
+	write('Kapasitas inventori:    '), write('6 slot'),nl,
+	write('Sisa inventori:         '), nl,
+	write('Jumlah Koleksi Tokemon: '), nl,
+	write('Koleksi:                '), nl,
+		  /*tokemon(_,_,_)->( # fact tokemon(nama, health, tipe)
+			write('Tokemon Anda:')
+			forall(tokemon(Nama,Health,Tipe),
+			(
+				(write(Nama),nl);
+				(write(Health),nl);
+				(write(Tipe),nl);
+			),nl,nl
+			));!,*/
+        write('Blacklist Legendary Tokemon:    '),
+		  /*legendaryTokemon(_,_,_)->( # fact legendaryTokemon(nama, health, tipe)
+		  	forall(legendaryTokemon(Nama,Health,Tipe),
+		  	(
+		  		(write(Nama),nl);
+		  		(write(Health),nl);
+		  		(write(Tipe),nl);
+		  	),nl,nl
+		  	))*/
+!.
 help :- !.
 
 /*loads(_) :-
