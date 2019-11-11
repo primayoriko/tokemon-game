@@ -49,7 +49,10 @@ isRintangan(X,Y) :-
     !.
 
 % PRINT KEBERJALANAN PROGRAM BELUM YAAAA
-
+printMap(X,Y) :-
+    player_position(X,Y), !, write('P').
+printMap(X,Y) :-
+    isGym(X,Y), !, write('G').
 printMap(X,Y) :-
     isRightBorder(X,Y), !, write('X').
 printMap(X,Y) :-
@@ -59,11 +62,7 @@ printMap(X,Y) :-
 printMap(X,Y) :-
     isBottomBorder(X,Y), !, write('X').
 printMap(X,Y) :-
-    player_position(X,Y), !, write('P').
-printMap(X,Y) :-
     rintangan(X,Y), !, write('X').
-printMap(X,Y) :-
-	isGym(X,Y), !, write('G').
 printMap(_,_) :-
 	write('-').
 
