@@ -1,9 +1,9 @@
 :- include('init.pl').
 
-dynamic :- (lebarPeta/1).
-dynamic :- (tinggiPeta/1).
-dynamic :- (posisiGym/2).
-dynamic :- (rintangan/2).
+dynamic(lebarPeta/1).
+dynamic(tinggiPeta/1).
+dynamic(posisiGym/2).
+dynamic(rintangan/2).
 
 init_map :-
     random(10,50,X),
@@ -80,4 +80,3 @@ generateRintangan :-
         rintangan(A,B)
         )),
     !.
-    
