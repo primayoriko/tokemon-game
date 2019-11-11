@@ -28,7 +28,6 @@ status :-
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
 	
 status :- !.
-
 help :- !.
 
 /*loads(_) :-
