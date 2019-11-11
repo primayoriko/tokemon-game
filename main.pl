@@ -15,7 +15,6 @@ start :-
 	write('Halo! <story>.'),nl,
 	write('Selamat bermain! Good luck!'),nl,
 	init_map,
-	init_player,
 	retract(game_status(_)), asserta(game_status(mulai)),
 	!.
 
