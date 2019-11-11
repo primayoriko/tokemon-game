@@ -5,8 +5,16 @@
 
 update :- !. */
 
-start :- !.
+start :-
+	gameMain(_),
+	write('Kamu tidak bisa memulai game ketika game sudah dimulai.'), nl, !.
 
+start :-
+	write('  my story '),nl,
+	write('Game Mulai'),nl,
+	asserta(gameMain(1)),
+	init_map,
+	!.
 
 map :-
 	\+gameMain(_),
@@ -14,12 +22,12 @@ map :-
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
 map :- !.
 
-
 status :-
 	\+gameMain(_),
 	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
-status :-
+	
+status :- !.
 
 help :- !.
 
