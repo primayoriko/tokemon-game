@@ -1,5 +1,4 @@
-include('init.pl').
-
+:- include('map.pl').
 
 n :-
 	\+game_status(_),
