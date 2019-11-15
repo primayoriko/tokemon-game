@@ -90,6 +90,7 @@ posi :-
 
 n :-
     player_position(X,Y),
+    Y > 1,
 	Y2 is Y-1,
     X2 is X,
     write([X2,Y2]),nl,
@@ -109,7 +110,8 @@ s :-
 
 e :-
     player_position(X,Y),
-	X > 0,
+    lebarPeta(XX),
+	X < XX,
     Y2 is Y,
 	X2 is X+1,
 	write([X2,Y2]),nl,
@@ -120,7 +122,7 @@ e :-
 
 w :-
     player_position(X,Y),
-	Y > 1,
+	X > 1,
 	Y2 is Y,
     X2 is X-1,
 	write([X2,Y2]),nl,

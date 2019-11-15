@@ -1,77 +1,30 @@
-tokemon(imbamon).
-health(imbamon,120).
-type(imbamon,fire).
-nA(imbamon,15).
-sA(imbamon,90).
+/*tokemon(nama,max health, nattack,sattack,namasatack,type,id)*/
+tokemon(imbamon,120,15,90,international_mathematics_attack,fire,1).
 
-tokemon(junhomon).
-health(junhomon,150).
-type(junhomon,water).
-nA(junhomon,10).
-sA(junhomon,95).
+tokemon(junhomon,150,10,95,korean_idol_dance,water,2).
 
-tokemon(rahamon).
-health(rahamon,140).
-type(rahamon,grass).
-nA(rahamon,20).
-sA(rahamon,80).
+tokemon(rahamon,140,20,80,smokebomb,grass,3).
 
-tokemon(asinmon).
-health(asinmon,80).
-type(asinmon,fire).
-nA(asinmon,25).
-sA(imbamon,120).
+tokemon(asinmon,60,45,200,ekadobomb,fire,4).
 
-tokemon(cibaimon).
-health(cibaimon,200).
-type(cibaimon,water).
-nA(cibaimon,10).
-sA(cibaimon,60).
+tokemon(cibaimon,250,10,70,pork_chop,water,5).
 
-tokemon(rurimon).
-health(rurimon,100).
-type(rurimon,grass).
-nA(rurimon,15).
-sA(rurimon,80).
+tokemon(rurimon,100,20,80,axing,grass,6).
 
-tokemon(kunmon).
-health(kunmon,170).
-type(kunmon,grass).
-nA(kunmon,15).
-sA(kunmon,95)
+tokemon(kunmon,170,20,90,hewwo_shout,grass,7).
 
-tokemon(afimon).
-health(afimon,120).
-type(afimon,fire).
-nA(afimon,15).
-sA(afimon,75).
+tokemon(afimon,120,20,75,coughofhell,fire,8).
 
-tokemon(anangmon).
-health(anangmon,130).
-type(anangmon,water).
-nA(anangmon,15).
-sA(anangmon,75).
+tokemon(anangmon,130,25,75,surekill,water,9).
 
-legtokemon(inkkkk).
-health(inkkkk,350).
-type(inkkkk,fire).
-nA(inkkkk,40).
-sA(inkkkk,140).
+tokemon(boimon,120,25,80,robot_dance,grass,10).
 
-legtokemon(yorikomon).
-health(yorikomon,300).
-type(yorikomon,water).
-nA(yorikomon,35).
-sA(yorikomon,160).
+tokemon(mitelmon,140,20,75,dunk,fire,11).
 
-legtokemon(petroosmon).
-health(petroosmon,270).
-type(petroosmon,grass).
-nA(petroosmon,45).
-sA(petroosmon,145).
+tokemon(athenamon,135,25,70,judgement,water,12).
 
-legtokemon(iqbalmon).
-health(iqbalmon,280).
-type(iqbalmon,fire).
-nA(iqbalmon,45).
-sA(iqbalmon,150).
+tokemon(inkmon,350,40,140,call_juke,fire,13).
+
+tokemon(yorikomon,300,45,160,carry,water,14).
+
+tokemon(iqbalmon,320,35,150,destroy,grass,15).
