@@ -1,9 +1,7 @@
-:- include('init.pl').
-
-dynamic(lebarPeta/1).
-dynamic(tinggiPeta/1).
-dynamic(posisiGym/2).
-dynamic(rintangan/2).
+:- dynamic(lebarPeta/1).
+:- dynamic(tinggiPeta/1).
+:- dynamic(posisiGym/2).
+:- dynamic(rintangan/2).
 
 init_map :-
     random(10,50,X),
@@ -72,11 +70,11 @@ generateRintangan :-
 	XMax is X,
 	YMin is 2,
     YMax is Y,
-    Sum is X*Y/10,
+    Sum is round(X*Y/10),
         
     forall(between(1,Sum,S), (
         random(XMin,XMax, A),
         random(YMin,YMax, B),
-        rintangan(A,B)
+        asserta(rintangan(A,B))
         )),
     !.

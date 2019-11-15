@@ -1,7 +1,8 @@
 :- include('move.pl').
 
+:- dynamic(game_status/1).
 game_status(0).
-battle_status(0).
+
 
 start :-
 	game_status(1),
