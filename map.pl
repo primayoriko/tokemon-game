@@ -10,7 +10,7 @@ init_map :-
     random(1,Y,YGym),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
-    asserta(posisiXGym(XGym,YGym)),
+    asserta(posisiGym(XGym,YGym)),
     asserta(player_position(1,1)),
     generateRintangan,
     !.
@@ -62,19 +62,70 @@ printMap(X,Y) :-
     rintangan(X,Y), !, write('X').
 printMap(_,_) :-
 	write('-').
+    
 
 generateRintangan :-
     lebarPeta(X),
     tinggiPeta(Y),
-    XMin is 2,
-	XMax is X,
-	YMin is 2,
-    YMax is Y,
-    Sum is round(X*Y/10),
-        
-    forall(between(1,Sum,S), (
-        random(XMin,XMax, A),
-        random(YMin,YMax, B),
-        asserta(rintangan(A,B))
-        )),
-    !.
+    random(2,X,A),
+    random(2,Y,B),
+    asserta(rintangan(A,B)),!.
+
+printTheWholeMap :-
+    lebarPeta(X),
+    tinggiPeta(Y),
+    XXX is X +1,
+    YYY is Y +1,
+    forall(between(0,YYY,YY),
+        (forall(between(0,XXX,XX),
+            printMap(XX,YY)
+        ),nl)
+    ),!.
+
+
+posi :-
+    player_position(X,Y),
+    write(X), nl,
+    write(Y), ! .
+
+n :-
+    player_position(X,Y),
+	Y2 is Y-1,
+    X2 is X,
+    write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+
+s :-
+    player_position(X,Y),
+    tinggiPeta(YY),
+	Y < YY,
+	Y2 is Y+1,
+    X2 is X,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+e :-
+    player_position(X,Y),
+	X > 0,
+    Y2 is Y,
+	X2 is X+1,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+
+
+w :-
+    player_position(X,Y),
+	Y > 1,
+	Y2 is Y,
+    X2 is X-1,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+
+
