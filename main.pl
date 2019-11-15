@@ -3,7 +3,6 @@
 :- dynamic(game_status/1).
 game_status(0).
 
-
 start :-
 	game_status(1),
 	write('Game sudah dimulai!'),nl,
@@ -17,7 +16,17 @@ start :-
 	write('	╚╝║║╚╝║║─║║║╚╝╝─║╚══╗║╔╗╔╗║║║─║║║╔╗╚╝║'),nl,
 	write('	──║║──║║─║║║╔╗║─║╔══╝║║║║║║║║─║║║║╚╗║║'),nl,
 	write('	──║║──║╚═╝║║║║╚╗║╚══╗║║║║║║║╚═╝║║║─║║║'),nl,
-	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,*/
+	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,nl*/
+	write('Kamu adalah mahasiswa biasa, normal, dan punya sedikit teman, dan berharap memiliki masa depan yang cerah.'),nl,
+	write('Hari-hari berjalan dengan cukup normal, dan dibumbui dengan sedikit perasaan depresi khas mahasiswa.'),nl,
+	write('Hingga suatu hari, saat kamu sedang merenung di plaza widya, kamu melihat meteor dengan kecepatan tinggi '),nl,
+	write('dan menghantam bumi. Tanah bergetar hebat, dan seketika pandanganmu membuyar.'),nl,nl,
+	write('Saat tersadar, kamu didunia yang tidak sama lagi. Dunia dipenuhi makhluk-makhluk aneh. Berkat bantuan'),nl,
+	write('Prof. Rila M. yang telah menyelamatkanmu, kamu mengetahui meteor tersebut membawa wabah virus dan mengubah orang-orang'),nl,
+	write('menjadi makhluk unik bernama Tokemon. Kini Prof. Rila tengah mengembangkan serum untuk mengatasi wabah dan mengembalikan orang-orang.'),nl,
+	write('Kini tugasmu adalah membantu Prof Rila mengalahkan tokemon spesial yang luar biasa kuat dan mengambil sampel darahnya guna '),nl,
+	write('pembuatan serum. Kamu dibantu dengan alat hasil penelitian Prof. Rila bisa menjinakkan tokemon-tokemon tersebut'),nl,
+	write('sekarang bantu Prof. Rila untuk segera mengalahkan tokemon spesial sebelum korban-korban sulit ditolong kembali!'),nl,nl,nl,
 	help,nl,nl,
 	legend,nl,nl,
 	write('Halo! <story>.'),nl,

@@ -78,3 +78,61 @@ generateRintangan :-
         asserta(rintangan(A,B))
         )),
     !.
+
+printTheWholeMap :-
+    lebarPeta(X),
+    tinggiPeta(Y),
+    XXX is X +1,
+    YYY is Y +1,
+    forall(between(0,YYY,YY),
+        (forall(between(0,XXX,XX),
+            printMap(XX,YY)
+        ),nl)
+    ),!.
+
+
+posi :-
+    player_position(X,Y),
+    write(X), nl,
+    write(Y), ! .
+
+n :-
+    player_position(X,Y),
+    Y > 1,
+	Y2 is Y-1,
+    X2 is X,
+    write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+
+s :-
+    player_position(X,Y),
+    tinggiPeta(YY),
+	Y < YY,
+	Y2 is Y+1,
+    X2 is X,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+e :-
+    player_position(X,Y),
+    lebarPeta(XX),
+	X < XX,
+    Y2 is Y,
+	X2 is X+1,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+
+
+w :-
+    player_position(X,Y),
+	X > 1,
+	Y2 is Y,
+    X2 is X-1,
+	write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
