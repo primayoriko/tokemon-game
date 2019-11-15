@@ -1,8 +1,13 @@
 :- include('move.pl').
 
+game_status(0).
+battle_status(0).
+
 start :-
-	game_status(mulai),
+	game_status(1),
 	write('Game sudah dimulai!'),nl,
+	write('Selesaikan dahulu apa yang sudah kamu mulai!'),nl,
+	write('Great power comes with great responsibility'),nl,
 	!.
 
 start :-
@@ -13,11 +18,11 @@ start :-
 	write('	──║║──║╚═╝║║║║╚╗║╚══╗║║║║║║║╚═╝║║║─║║║'),nl,
 	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,*/
 	help,nl,nl,
-	legend,
+	legend,nl,nl,
 	write('Halo! <story>.'),nl,
-	write('Selamat bermain! Good luck!'),nl,
+	write('Selamat bermain! Good luck!'),nl,nl,
 	init_map,
-	retract(game_status(_)), asserta(game_status(mulai)),
+	asserta(game_status(1)),
 	!.
 
 help :-
@@ -49,14 +54,14 @@ legend :-
 	
 
 map :-
-	\+game_status(mulai),
+	\+game_status(1),
 	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
 map :- !.
 
 	
 status :-
-	\+game_status(mulai),
+	\+game_status(1),
 	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
 	

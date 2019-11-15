@@ -11,4 +11,5 @@ dynamic(player_inv6/3).
 
 /* flow control */
 dynamic(game_status/1).
+dynamic(battle_status/1).
 dynamic(player_status/1).
