@@ -1,11 +1,12 @@
+:- include('tokemon.pl').
+:- include('utility.pl').
+
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
 :- dynamic(player_inv/6).
 
 :- dynamic(inventory/7).                /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
 :- dynamic(maxInventory/1).             /* maxInventory(Maks) */
-:- include('tokemon.pl').
-:- include('utility.pl').
 /*
 
 
@@ -20,11 +21,9 @@ init_player :-
 	% asserta(healthpoint(100)),
 	% asserta(armor(0)),
 	% asserta(senjata(sniper_rifle,40,3)),
-    asserta(maxInventory(6)),
-    % addToInventory(anangmon),
-    generateTokemon,
-    % 
-    .
+    asserta(maxInventory(6)).
+    % addToInventory(anangmon)
+    /*generateTokemon*/
 
 
 cekPanjangInv(Panjang) :-
@@ -48,37 +47,32 @@ addToInventory(Tokemon) :-
 
 delFromInventory(Tokemon) :-
 	\+inventory(Tokemon,_,_,_,_,_,_),!,fail.
+
 delFromInventory(Tokemon) :-
 	inventory(Tokemon,_,_,_,_,_,_),
 	retract(inventory(Tokemon,_,_,_,_,_,_)),
 	!.
 
-generateTokemon:-
-
+/*generateTokemon:-
 	findall(Ter,tokemon(Ter,_,_,_,_,_,Y),Y<=12,ListTokemon),
     length(ListTokemon, Panjang),
     random(0,Panjang,NoTokemon),
     ambil(ListTokemon, NoTokemon, Tokemon),
     addToInventory(Tokemon),
-	!.
+	!. */
 
-drop(X):-
-
-
-capture(X):-
+/*drop(X):- .
 
 
-heal:-
+capture(X):- .
 
 
 check_inv(X) :- 
     \+player_inv(_,X,________),
     write("Tokemon tidak tersedia di inventory"),!.
 
-check_inv(X) :-
-
-    .
-
+check_inv(X) :- .
+*/
 
 
 

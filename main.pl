@@ -1,4 +1,4 @@
-:- include('move.pl').
+:- include('battle.pl').
 
 :- dynamic(game_status/1).
 game_status(0).

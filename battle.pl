@@ -1,4 +1,5 @@
 :- include('map.pl').
+:- include('player.pl').
 
 :- dynamic(battle_status/1).
 :- dynamic(current_tokemon1/3). /*id tokemon kita, c_health, lvl*/
@@ -8,16 +9,11 @@
 :- dynamic(lagi_pick/1).
 :- dynamic(digym/1).
 :- dynamic(udahheal/1).
+:- dynamic(maucapture/1).
 
 digym(0).
 udahheal(0).
 battle_status(0).
-
-
-attack :- battle_status(0),
-          write("Pertarungan belum dimulai."),nl,!.
-          
-attack :- battle_status(1),
 
 fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),!.
 
@@ -44,7 +40,7 @@ run :- udah_lari(1),
 roll :- 
     player_position(A,B),
     \+isGym(A,B),
-    (digym(1) -> retract(digym(1)),asserta(digym(0)),write('anda telah meninggalkan gym'),nl;)
+    (digym(1) -> retract(digym(1)),asserta(digym(0)),write('anda telah meninggalkan gym'),nl);
     random(1,100,X),
     (X mod 3 =:= 0 -> write("Ada Tokemon liar!"),nl, write("pilih command fight atau run!"),nl),!.
 
@@ -66,7 +62,7 @@ heal :-
     write('your pokemon has been healed'),nl.
 
 tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_), tokemon(B,_,_,_,_,E,Y), current_tokemon2(Y,F,_), 
-                    write(A),nl, write("Health: "), write(D),nl, write("Type: "), write(C),nl,nl
+                    write(A),nl, write("Health: "), write(D),nl, write("Type: "), write(C),nl,nl,
                     write(B),nl, write("Health: "), write(F),nl, write("Type: "), write(E),nl,!.
 
 pick(X) :- battle_status(0), write("Tidak ada pertarungan saat ini"),nl,!.
@@ -79,15 +75,27 @@ pick(X) :-
             battle_status(1),
             check_inv(X),tokemon(X,A,_,_,_,_,Y), 
             retractall(current_tokemon1(_,_,_)), retractall(current_tokemon2(_,_,_)), 
-            random(1,12,Z), tokemon (_,B,_,_,_,_,Z),
+            random(1,12,Z), tokemon(_,B,_,_,_,_,Z),
             assert(current_tokemon1(Y,A,1)),assert(current_tokemon2(Z,B,1)),
             tulis_battle,!.
+
+
+attack :- battle_status(0),
+          write("Pertarungan belum dimulai."),nl,!.
 
 attack :-
             battle_status(1),
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
-            dmg1 is A, dmg2 is B,
-            (C=="fire",E=="grass" -> dmg1 is dmg1 )
+            D2 is D-B, F2 is F-A, D2>0, F2>0,
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)).
 
+attack :-
+            battle_status(1),
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            D2 is D-B, F2 is F-A, D2>0, F2=:=0,
+            retract(battle_status(1)),assert(battle_status(0)),
+            retract(maucapture(0)),assert(maucapture(1)), 
+            write("Tokemon telah ")
 
 
