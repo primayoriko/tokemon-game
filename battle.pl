@@ -1,14 +1,15 @@
 :- include('map.pl').
 
-:- dynamic(battle_status/1).
-:- dynamic(current_tokemon1/3). /*id tokemon kita, c_health, lvl*/
-:- dynamic(current_tokemon2/3). /*id tokemon musuh, c_health, lvl*/
-:- dynamic(udah_lari/1).
-:- dynamic(lagi_ketemu/1).
-:- dynamic(lagi_pick/1).
 :- dynamic(digym/1).
 :- dynamic(udahheal/1).
 :- dynamic(maucapture/1).
+:- dynamic(udah_lari/1).
+:- dynamic(lagi_ketemu/1).
+:- dynamic(lagi_pick/1).
+:- dynamic(battle_status/1).
+
+:- dynamic(current_tokemon1/3). /*id tokemon kita, c_health, lvl*/
+:- dynamic(current_tokemon2/3). /*id tokemon musuh, c_health, lvl*/
 
 digym(0).
 udahheal(0).
@@ -95,6 +96,8 @@ attack :-
             retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
             assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)).
 
+
+/*tokemon(nama, max health, nattack, sattack, namasatack, type, id)*/
 attack :-
             battle_status(1),
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
@@ -103,4 +106,40 @@ attack :-
             retract(maucapture(0)),assert(maucapture(1)), 
             write("Tokemon telah ").
 
+attack :-
+            battle_status(1),
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            D2 is D-B, F2 is F-A, D2>0, F2=:=0,
+            retract(battle_status(1)),assert(battle_status(0)),
+            retract(maucapture(0)),assert(maucapture(1)), 
+            write("Tokemon telah ").
 
+specialattack :- 
+            battle_status(0),
+            write('Tidak sedang bertempur mas, mbak'),nl,!.
+
+specialattack :-
+            /* super effective condtion */
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
+            write("Wow! Super Effective."), nl,
+            !.
+
+
+
+specialattack :- 
+            /* less effective condtion */
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
+            write("So sad! our attack isn't effective."), nl,
+            !.
+
+specialattack :-
+            /* normal condtion */
+
+
+
+calc_health :-
+            
+
+            

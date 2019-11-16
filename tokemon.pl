@@ -1,4 +1,4 @@
-/*tokemon(nama,max health, nattack,sattack,namasatack,type,id)*/
+/*tokemon(nama, max health, nattack, sattack, namasatack, type, id)*/
 tokemon(ascalon,5500,100,700,null_void,fire,0).
 
 tokemon(imbamon,120,15,90,imi_attack,fire,1).
