@@ -7,4 +7,5 @@
 ####  > battle 
 ####  > start 
 ####  > run
-####  > 
+####  > tokemon_killed
+####  > inv_full

@@ -87,9 +87,54 @@ pick(X) :-
             assert(current_tokemon1(Y,A,1)),assert(current_tokemon2(Z,B,1)),
             tulis_battle,!.
 
+capture :- 
+            /* Kondisi prasyarat tak terpenuhi */
+            write('Anda mesti baru saja mengalahkan tokemon untuk capture!!'),nl,!.
 
-attack :- battle_status(0),
-          write("Kamu tidak sedang bertarung."),nl,!.
+capture :- 
+            /* Kondisi prasyarat tak terpenuhi krn inven penuh*/
+            write('Inventory penuh!! Drop salah satu tokemon pada inventory!'),nl,!.
+
+capture :- 
+            random(1,100,Y),
+            ((current_tokemon2(X,_,_), X>12) -> Y < 80 ; Y < 20),
+            write('Tokemon gagal di-capture'),!.
+
+capture :- 
+            /* aksi di capture  */
+            !.
+
+capture :- 
+            write('Anda gagal men-capturenya!, better luck next time!!'), nl.
+
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            X=\=0, Y=\=0, !.
+
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            Y =:= 0, 
+            write('Selamat anda berhasil mengalahkan tokemon!'), nl,
+            write('Ingin mencoba untuk mencapture??'), nl,
+            !.
+
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            X =:= 0, 
+            write('Tokemon anda mati!!'),
+            !.
+            
+calc_health :-
+            /* menghitung health setelah suatu attack */
+            current_tokemon1(X1,E,Y1), current_tokemon2(X2,F,Y2),
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            (E < 0 ->       ;      ),
+            (F < 0 ->       ;        ),
+            tulis_battle,
+            see_result.
+
+attack :-  battle_status(0),
+           write("Kamu tidak sedang bertarung."),nl,!.
 
 attack :-
             battle_status(1),
@@ -97,7 +142,6 @@ attack :-
             D2 is D-B, F2 is F-A, D2>0, F2>0,
             retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
             assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)).
-
 
 /*tokemon(nama, max health, nattack, sattack, namasatack, type, id)*/
 attack :-
@@ -127,8 +171,6 @@ specialattack :-
             write("Wow! Super Effective."), nl,
             !.
 
-
-
 specialattack :- 
             /* less effective condtion */
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
@@ -138,34 +180,11 @@ specialattack :-
 
 specialattack :-
             /* normal condtion */
-            .
-
-
-see_result(X, Y) :-
-            /* melihat outcome dari battle */
-            X =/= 0, Y =/= 0, !.
-
-see_result(X, Y) :-
-            /* melihat outcome dari battle */
-            Y =:= 0, 
-            write('Selamat anda berhasil mengalahkan tokemon!'), nl,
-            write('Ingin mencoba untuk mencapture??'), nl,
             !.
 
-see_result(X, Y) :-
-            /* melihat outcome dari battle */
-            X =:= 0, 
-            write('Tokemon anda mati!!'),
-            !.
-            
+enemyattack :-
 
-calc_health :-
-            /* menghitung health setelah suatu attack */
-            current_tokemon1(_,E,_), current_tokemon2(_,F,_),
-            (E < 0 -> (asser) ; E is E),
-            (F < 0 -> F is 0 ; F is F ),
-            tulis_battle,
-            see_result.
+
 
 
             
