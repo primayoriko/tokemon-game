@@ -1,5 +1,4 @@
 :- include('map.pl').
-:- include('player.pl').
 
 :- dynamic(battle_status/1).
 :- dynamic(current_tokemon1/3). /*id tokemon kita, c_health, lvl*/

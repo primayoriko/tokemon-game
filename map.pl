@@ -1,3 +1,5 @@
+:- include('player.pl').
+
 :- dynamic(lebarPeta/1).
 :- dynamic(tinggiPeta/1).
 :- dynamic(posisiGym/2).
@@ -125,8 +127,6 @@ e :-
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
 	asserta(player_position(X2,Y2)), !.
-
-
 
 w :-
     player_position(X,Y),

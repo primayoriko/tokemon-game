@@ -5,8 +5,10 @@
 :- dynamic(player_position/2).
 :- dynamic(player_inv/6).
 
-:- dynamic(inventory/7).                /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
-:- dynamic(maxInventory/1).             /* maxInventory(Maks) */
+:- dynamic(inventory/7).                
+:- dynamic(maxInventory/1).            
+/* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
+/* maxInventory(Maks) */
 /*
 
 
