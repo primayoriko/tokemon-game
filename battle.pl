@@ -8,8 +8,10 @@
 :- dynamic(lagi_pick/1).
 :- dynamic(battle_status/1).
 
-:- dynamic(current_tokemon1/3). /*id tokemon kita, c_health, lvl*/
-:- dynamic(current_tokemon2/3). /*id tokemon musuh, c_health, lvl*/
+:- dynamic(current_tokemon1/3). 
+/*id tokemon kita, c_health, lvl*/
+:- dynamic(current_tokemon2/3). 
+/*id tokemon musuh, c_health, lvl*/
 
 digym(0).
 udahheal(0).
@@ -120,7 +122,7 @@ specialattack :-
 
 specialattack :-
             /* super effective condtion */
-            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
             (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
             write("Wow! Super Effective."), nl,
             !.
@@ -129,17 +131,41 @@ specialattack :-
 
 specialattack :- 
             /* less effective condtion */
-            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
+            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
             (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
             write("So sad! our attack isn't effective."), nl,
             !.
 
 specialattack :-
             /* normal condtion */
+            .
 
 
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            X =/= 0, Y =/= 0, !.
+
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            Y =:= 0, 
+            write('Selamat anda berhasil mengalahkan tokemon!'), nl,
+            write('Ingin mencoba untuk mencapture??'), nl,
+            !.
+
+see_result(X, Y) :-
+            /* melihat outcome dari battle */
+            X =:= 0, 
+            write('Tokemon anda mati!!'),
+            !.
+            
 
 calc_health :-
-            
+            /* menghitung health setelah suatu attack */
+            current_tokemon1(_,E,_), current_tokemon2(_,F,_),
+            (E < 0 -> (asser) ; E is E),
+            (F < 0 -> F is 0 ; F is F ),
+            tulis_battle,
+            see_result.
+
 
             
