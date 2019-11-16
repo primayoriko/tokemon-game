@@ -27,8 +27,8 @@ tokemon(athenamon,135,25,70,judgement,water,12).
 
 tokemon(inkmon,350,40,140,call_juke,fire,13).
 
-tokemon(yorikomon,300,45,160,carry,water,14).
+tokemon(yorikomon,300,45,160,carry,fire,14).
 
 tokemon(iqbalmon,320,35,150,destroy,grass,15).
 
-tokemon(malmon,200,30,200,bronze_medal_slash,16).
+tokemon(malmon,200,30,200,bronze_medal_slash,water,16).

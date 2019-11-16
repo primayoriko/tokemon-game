@@ -2,4 +2,9 @@
 
 ## How to use it
 
-### efs
+### state flag in game : 
+
+####  > battle 
+####  > start 
+####  > run
+####  > 

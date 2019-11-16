@@ -15,7 +15,13 @@ digym(0).
 udahheal(0).
 battle_status(0).
 
-fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),!.
+fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
+         retract(battle_status(0)), assert(battle_status(1)),
+         write('Pilih tokemonmu dari tokemon yang tersedia!'),
+         /* list_pokemon */
+         /* pick gitu */
+         tulis_battle,
+         !.
 
 fight :- write("Tidak ada Tokemon yang bisa dilawan!"),nl.
 
@@ -42,7 +48,7 @@ roll :-
     \+isGym(A,B),
     (digym(1) -> retract(digym(1)),asserta(digym(0)),write('anda telah meninggalkan gym'),nl);
     random(1,100,X),
-    (X mod 3 =:= 0 -> write("Ada Tokemon liar!"),nl, write("pilih command fight atau run!"),nl),!.
+    (X mod 4 =:= 0 -> write("Ada Tokemon liar!"),nl, write("pilih command fight atau run!"),nl),!.
 
 roll :-
     player_position(A,B),
@@ -81,7 +87,7 @@ pick(X) :-
 
 
 attack :- battle_status(0),
-          write("Pertarungan belum dimulai."),nl,!.
+          write("Kamu tidak sedang bertarung."),nl,!.
 
 attack :-
             battle_status(1),
@@ -96,6 +102,6 @@ attack :-
             D2 is D-B, F2 is F-A, D2>0, F2=:=0,
             retract(battle_status(1)),assert(battle_status(0)),
             retract(maucapture(0)),assert(maucapture(1)), 
-            write("Tokemon telah ")
+            write("Tokemon telah ").
 
 
