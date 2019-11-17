@@ -17,23 +17,16 @@ init_player :-
 	asserta(player_status(1)),
 	asserta(inventory_used(0)),
 	asserta(gameMain(1)),
-	% lebarPeta(L),
-	% tinggiPeta(T),
-	% random(1,L,X),
-	% random(1,T,Y),
-	% asserta(player(X,Y)),
-	% asserta(healthpoint(100)),
-	% asserta(armor(0)),
-	% asserta(senjata(sniper_rifle,40,3)),
-    asserta(maxInventory(6)).
-    % addToInventory(anangmon)
-    /*generateTokemon*/
+	asserta(maxInventory(6)),
+	generateTokemon.
+  
 
 cekPanjangInv(Panjang) :-
 	findall(B,inventory(B,_,_,_,_,_,_),ListBanyak),
 	length(ListBanyak,Panjang).
 
 addToInventory(_) :-
+	/* Memasukkan tokemon ke dalam inventory namun inventori sudah full */
 	cekPanjangInv(Panjang),
 	maxInventory(Maks),
     (Panjang+1) > Maks,
@@ -43,26 +36,27 @@ addToInventory(_) :-
     fail.
 
 addToInventory(Tokemon) :-
-    /*Inventory muat*/
+    /* Memasukkan tokemon ke dalam inventory dan inventori belum full */
     tokemon(Tokemon,H,N,S,NS,T,I),  
 	asserta(inventory(Tokemon,H,N,S,NS,T,I)),!.
 
 
 delFromInventory(Tokemon) :-
+	/*Menghapus tokemon dari inventory namun tidak ada tokemon dalam inventory*/
 	\+inventory(Tokemon,_,_,_,_,_,_),!,fail.
 
 delFromInventory(Tokemon) :-
+	/* Menghapus tokemon dari inventory dan tokemon ada di inventory */
 	inventory(Tokemon,_,_,_,_,_,_),
 	retract(inventory(Tokemon,_,_,_,_,_,_)),
 	!.
 
-/*generateTokemon:-
-	findall(Ter,tokemon(Ter,_,_,_,_,_,Y),Y<=12,ListTokemon),
-    length(ListTokemon, Panjang),
-    random(0,Panjang,NoTokemon),
-    ambil(ListTokemon, NoTokemon, Tokemon),
+generateTokemon:-
+	/* Menentukan Tokemon pada awal game secara random */
+	random(1,12,X),
+	tokemon(Tokemon,_,_,_,_,_,X),
     addToInventory(Tokemon),
-	!. */
+	!.
 
 /*drop(X):- .
 

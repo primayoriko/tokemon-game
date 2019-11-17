@@ -8,7 +8,7 @@
 :- dynamic(ctrheal/1).
 
 init_map :-
-    exploring_status(1),
+    asserta(exploring_status(1)),
     random(10,50,X),
     random(10,50,Y),
     random(1,X,XGym),
@@ -16,7 +16,7 @@ init_map :-
     asserta(ctrheal(0)),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
-    asserta(posisiXGym(XGym,YGym)),
+    asserta(posisiGym(XGym,YGym)),
     asserta(player_position(1,1)),
     generateRintangan,
     !.
@@ -142,26 +142,29 @@ w :-
     retract(player_position(X,Y)),
 	asserta(player_position(X2,Y2)), !.
 
-/* BUAT DEBUGGGGGG DOANGGGGG */
+
+
 
 goToGym :-
+    /* BUAT DEBUGGGGGG DOANGGGGG */
     posisiGym(A,B),
     X2 is A,
     Y2 is B,
     retract(player_position(_,_)),
 	asserta(player_position(X2,Y2)), !.
 
-setHealthTo0 :- 
-    Y is 0,
-    retract(inventory(Tokemon,_,N,S,NS,T,I)),
-    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
 
-setHealthToFull :- 
-    inventory(Tokemon,Health,N,S,NS,T,I),
-    tokemon(Tokemon,Health1,_,_,_,_,_),
-    Y is Health1,
-    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
-    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+setHealthTo0 :-
+    /* BUAT DEBUGGGGGG DOANGGGGG */
+    forall(retract(inventory(Tokemon,_,N,S,NS,T,I)),asserta(inventory(Tokemon,0,N,S,NS,T,I))).
+
+setHealthToFull :-
+    /* Prosedur untuk mengheal semua tokemon */
+    forall(inventory(Tokemon,Health,N,S,NS,T,I),
+    forall(tokemon(Tokemon,Health1,_,_,_,_,_),
+    forall(Y is Health1,
+    forall(retract(inventory(Tokemon,Health,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)))))).
 
 heal :-
     /* Pemain sudah pernah melakukan heal */
@@ -169,6 +172,7 @@ heal :-
     write("Tokemon gagal disembuhkan. Anda sudah menggunakan fitur ini."),
     nl,
     !. 
+    
 heal :-
     /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
     ctrheal(0),
