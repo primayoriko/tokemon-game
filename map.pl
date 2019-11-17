@@ -4,8 +4,10 @@
 :- dynamic(tinggiPeta/1).
 :- dynamic(posisiGym/2).
 :- dynamic(rintangan/2).
+:- dynamic(exploring_status/1).
 
 init_map :-
+    exploring_status(1),s
     random(10,50,X),
     random(10,50,Y),
     random(1,X,XGym),

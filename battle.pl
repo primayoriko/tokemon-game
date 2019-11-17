@@ -7,6 +7,7 @@
 :- dynamic(lagi_ketemu/1).
 :- dynamic(lagi_pick/1).
 :- dynamic(battle_status/1).
+:- dynamic(finish_battle/1).
 
 :- dynamic(current_tokemon1/3). 
 /*id tokemon kita, c_health, lvl*/
@@ -16,6 +17,7 @@
 digym(0).
 udahheal(0).
 battle_status(0).
+finish_battle(0).
 
 fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
          retract(battle_status(0)), assert(battle_status(1)),
@@ -93,14 +95,15 @@ capture :-
 
 capture :- 
             /* Kondisi prasyarat tak terpenuhi krn inven penuh*/
+            inventory_used(6),
             write('Inventory penuh!! Drop salah satu tokemon pada inventory!'),nl,!.
 
 capture :- 
             random(1,100,Y),
             ((current_tokemon2(X,_,_), X>12) -> Y < 80 ; Y < 20),
-            write('Tokemon gagal di-capture'),!.
+            write('Tokemon gagal di-capture'),nl!.
 
-capture :- 
+capture :-  
             /* aksi di capture  */
             !.
 
@@ -116,6 +119,7 @@ see_result(X, Y) :-
             Y =:= 0, 
             write('Selamat anda berhasil mengalahkan tokemon!'), nl,
             write('Ingin mencoba untuk mencapture??'), nl,
+            retractall(finish_battle(0), finish_battle(1)),
             !.
 
 see_result(X, Y) :-
@@ -128,8 +132,10 @@ calc_health :-
             /* menghitung health setelah suatu attack */
             current_tokemon1(X1,E,Y1), current_tokemon2(X2,F,Y2),
             retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
-            (E < 0 ->       ;      ),
-            (F < 0 ->       ;        ),
+            (E < 0 -> (assert(current_tokemon1(X1,0,Y1)), assert(current_tokemon1(X1,F,Y1))); 
+             (assert(current_tokemon1(X1,E,Y1)), assert(current_tokemon1(X1,F,Y1))),
+            (F < 0 ->(assert(current_tokemon1(X1,E,Y1)), assert(current_tokemon1(X1,0,Y1)));
+            (assert(current_tokemon1(X1,E,Y1)), assert(current_tokemon1(X1,F,Y1))),
             tulis_battle,
             see_result.
 

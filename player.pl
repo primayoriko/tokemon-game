@@ -4,16 +4,18 @@
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
 :- dynamic(player_inv/6).
-
-:- dynamic(inventory/7).                
+:- dynamic(inventory/7).
+:- dynamic(inventory_used/1).        
 :- dynamic(maxInventory/1).            
 /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
 /* maxInventory(Maks) */
 /*
 
-
 */
+
 init_player :-
+	asserta(player_status(1)),
+	asserta(inventory_used(0)),
 	asserta(gameMain(1)),
 	% lebarPeta(L),
 	% tinggiPeta(T),
@@ -26,7 +28,6 @@ init_player :-
     asserta(maxInventory(6)).
     % addToInventory(anangmon)
     /*generateTokemon*/
-
 
 cekPanjangInv(Panjang) :-
 	findall(B,inventory(B,_,_,_,_,_,_),ListBanyak),
