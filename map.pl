@@ -2,12 +2,17 @@
 :- dynamic(tinggiPeta/1).
 :- dynamic(posisiGym/2).
 :- dynamic(rintangan/2).
+:- dynamic(ctrheal/1).
+
+:- include('player.pl').
+
 
 init_map :-
     random(10,50,X),
     random(10,50,Y),
     random(1,X,XGym),
     random(1,Y,YGym),
+    asserta(ctrheal(0)),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
     asserta(posisiGym(XGym,YGym)),
@@ -44,7 +49,68 @@ isRintangan(X,Y) :-
     X =:= A,
     Y =:= B,
     !.
+/* BUAT DEBUGGGGGG DOANGGGGG */
 
+goToGym :-
+    posisiGym(A,B),
+    X2 is A,
+    Y2 is B,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)), !.
+
+setHealthTo0 :- 
+    Y is 0,
+    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+
+setHealthToFull :- 
+    inventory(Tokemon,Health,N,S,NS,T,I),
+    tokemon(Tokemon,Health1,_,_,_,_,_),
+    Y is Health1,
+    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+
+heal :-
+    /* Pemain sudah pernah melakukan heal */
+    ctrheal(1),
+    write("Tokemon gagal disembuhkan. Anda sudah menggunakan fitur ini."),
+    nl,
+    !. 
+heal :-
+    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,Y),
+    posisiGym(A,B),
+    X =\= A,
+    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
+    nl,
+    !.
+
+heal :-
+    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,Y),
+    posisiGym(A,B),
+    Y =\= B,
+    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
+    nl,
+    !.
+
+
+heal :-
+    /* Pemain belum pernah melakukan heal dan berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,Y),
+    posisiGym(A,B),
+    X =:= A,
+    Y =:= B,
+    setHealthToFull,
+    write("Tokemon anda sudah disembuhkan!"),
+    nl,
+    retract(ctrheal(Counter)),
+    asserta(ctrheal(1)) 
+    . 
+    
 % PRINT KEBERJALANAN PROGRAM BELUM YAAAA
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
