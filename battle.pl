@@ -147,7 +147,8 @@ attack :-
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
             D2 is D-B, F2 is F-A, D2>0, F2>0,
             retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
-            assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)).
+            assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health.
 
 /*tokemon(nama, max health, nattack, sattack, namasatack, type, id)*/
 attack :-
@@ -155,16 +156,18 @@ attack :-
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
             D2 is D-B, F2 is F-A, D2>0, F2=:=0,
             retract(battle_status(1)),assert(battle_status(0)),
-            retract(maucapture(0)),assert(maucapture(1)), 
-            write("Tokemon telah ").
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health.
 
 attack :-
             battle_status(1),
             tokemon(_,_,A,_,_,C,X), current_tokemon1(X,D,_), tokemon(_,_,B,_,_,E,Y), current_tokemon2(Y,F,_),
             D2 is D-B, F2 is F-A, D2>0, F2=:=0,
             retract(battle_status(1)),assert(battle_status(0)),
-            retract(maucapture(0)),assert(maucapture(1)), 
-            write("Tokemon telah ").
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health.
 
 specialattack :- 
             battle_status(0),
@@ -172,23 +175,37 @@ specialattack :-
 
 specialattack :-
             /* super effective condtion */
-            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
+            tokemon(Z,_,_,A,W,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
             (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
+            write(Z), write(" use "), write(W), write("!"),nl
             write("Wow! Super Effective."), nl,
+            dmg2 is A*15/10, E2 is E-B, F2 is F-dmg2,
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,E2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health,
             !.
 
 specialattack :- 
             /* less effective condtion */
-            tokemon(_,_,A,_,_,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
+            tokemon(Z,_,_,A,W,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
             (C == "Grass" , D == "Water"; C == "Water" , D == "Fire"; C == "Fire" , D == "Grass"),
+            write(Z), write(" use "), write(W), write("!"),nl
             write("So sad! our attack isn't effective."), nl,
+            dmg2 is A*5/10, E2 is E-B, F2 is F-dmg2,
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,E2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health,
             !.
 
 specialattack :-
             /* normal condtion */
+            tokemon(Z,_,_,A,W,C,X), current_tokemon1(X,E,_), tokemon(_,_,B,_,_,D,Y), current_tokemon2(Y,F,_),
+            write(Z), write(" use "), write(W), write("!"),nl
+            E2 is E-B, F2 is F-A,
+            retractall(current_tokemon1(_,_,_)),retractall(current_tokemon2(_,_,_)),
+            assert(current_tokemon1(X,E2,_)), assert(current_tokemon2(Y,F2,_)),
+            calc_health,
             !.
-
-enemyattack :-
 
 
 
