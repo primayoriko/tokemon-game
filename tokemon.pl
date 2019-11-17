@@ -3,7 +3,7 @@ tokemon(imbamon,120,15,90,international_mathematics_attack,fire,1).
 
 tokemon(junhomon,150,10,95,korean_idol_dance,water,2).
 
-tokemon(rahamon,140,20,80,smokebomb,grass,3).
+tokemon(rahamon,120,30,80,smokebomb,grass,3).
 
 tokemon(asinmon,60,45,200,ekadobomb,fire,4).
 

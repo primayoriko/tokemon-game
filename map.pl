@@ -5,6 +5,10 @@
 :- dynamic(ctrheal/1).
 
 :- include('player.pl').
+:- include('tokemon.pl').
+:- include('battle.pl').
+
+
 
 
 init_map :-
@@ -127,7 +131,7 @@ generateRintangan :-
     random(2,Y,B),
     asserta(rintangan(A,B)),!.
 
-printTheWholeMap :-
+map :-
     lebarPeta(X),
     tinggiPeta(Y),
     XXX is X +1,
@@ -145,6 +149,7 @@ posi :-
     write(Y), ! .
 
 n :-
+    lagi_ketemu(0),
     player_position(X,Y),
     Y > 1,
 	Y2 is Y-1,
@@ -159,7 +164,12 @@ n :-
     write('nabrak bray'),nl,
     !.
 
+n:-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
+
 s :-
+    lagi_ketemu(0),
     player_position(X,Y),
     tinggiPeta(YY),
 	Y < YY,
@@ -178,6 +188,10 @@ s :-
     write('nabrak bray'),nl,
     !.
 
+s :-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
+
 e :-
     player_position(X,_),
     lebarPeta(XX),
@@ -187,6 +201,7 @@ e :-
     !.
 
 e :-
+    lagi_ketemu(0),
     player_position(X,Y),
     lebarPeta(XX),
 	X < XX,
@@ -197,13 +212,22 @@ e :-
 	asserta(player_position(X2,Y2)),
     roll, !.
 
+e:-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
+
 w :-
     player_position(X,_),
     X < 2,
     write('nabrak bray'),nl,
     !.
 
+w:-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
+
 w :-
+    lagi_ketemu(0),
     player_position(X,Y),
 	X > 1,
 	Y2 is Y,
@@ -211,34 +235,39 @@ w :-
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
 	asserta(player_position(X2,Y2)), 
-    roll.
+    roll, !.
 
 roll :-
     posisiGym(A,B),
     player_position(X,Y),
     X =:= A, Y =:= B,
-    write('welcome to the gym!'),nl, !.
+    write('welcome to the gym!'),nl, 
+    write('do you wish to heal?'), ! .
+
 
 roll :-
-    posisiGym(A,_),
-    player_position(X,_),
-    A =\= X,
-    random(1,100,X),
-    encounterroll(X),!.
-
-roll :-
-    posisiGym(_,B),
-    player_position(_,Y),
-    B =\= Y,
-    random(1,100,X),
-    encounterroll(X),!.
+    posisiGym(A,B),
+    player_position(X,Y),
+    (B =\= Y; A =\= X),
+    random(1,100,C),
+    encounterroll(C),!.
 
 
 encounterroll(X) :-
-    X > 90 -> (write('anda bertemu pokemon legendary'), !);
-    (X < 90, X > 60) -> (write('anda bertemu pokemon biasa'), !);
-    write('moved'),
-    !.
+    X > 15 -> write('moved');
+    (X < 12) -> battletest(X).
 
 
+battletest(X) :- 
+    retract(lagi_ketemu(0)),
+    asserta(lagi_ketemu(1)),
+    tokemon(A,B,C,D,E,F,X),
+    write('anda bertemu '), write(A), write(' liar!'),
+    asserta(current_tokemon2(X,B,1,C)),
+    write('fight or run?'),nl,!.
 
+pick(X) :-
+    inventory(X,B,C,D,E,F,G),
+    write('anda memilih '), write(X),nl,
+    retractall(current_tokemon1(_,_,_,_)),asserta(current_tokemon1(G,B,1,C)),
+    tulis_battle.
