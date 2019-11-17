@@ -1,4 +1,5 @@
-# tokemon-logif
+# tokemon-logif game 
+-------------------------
 ### state flag in game : 
  
 ####  > game_status : 0..1 -> ada game yang dimulai atau engga
