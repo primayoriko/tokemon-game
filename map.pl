@@ -71,46 +71,36 @@ setHealthToFull :-
     asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
 
 heal :-
-    /* Pemain sudah pernah melakukan heal */
-    ctrheal(1),
-    write("Tokemon gagal disembuhkan. Anda sudah menggunakan fitur ini."),
-    nl,
-    !. 
-heal :-
-    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
-    ctrheal(0),
-    player_position(X,Y),
-    posisiGym(A,B),
-    X =\= A,
-    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
-    nl,
-    !.
-
-heal :-
-    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
-    ctrheal(0),
-    player_position(X,Y),
-    posisiGym(A,B),
-    Y =\= B,
-    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
-    nl,
-    !.
-
-
-heal :-
     /* Pemain belum pernah melakukan heal dan berada di posisi Gym*/
     ctrheal(0),
     player_position(X,Y),
     posisiGym(A,B),
-    X =:= A,
-    Y =:= B,
+    X is A,
+    Y is B, 
     setHealthToFull,
-    write("Tokemon anda sudah disembuhkan!"),
+    write('Tokemon anda sudah disembuhkan!'),
     nl,
     retract(ctrheal(Counter)),
-    asserta(ctrheal(1)) 
-    . 
+    asserta(ctrheal(1)) ,!. 
     
+heal :-
+    /* Pemain sudah pernah melakukan heal */
+    ctrheal(1), ! ,write('udah heal'),
+    write('Tokemon gagal disembuhkan. Anda sudah menggunakan fitur ini.'),
+    nl. 
+
+
+heal :-
+    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,Y),
+    posisiGym(A,B),
+    (Y =\= B; X  =\= A),
+    write('Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym.'),
+    nl,
+    !.
+
+
 % PRINT KEBERJALANAN PROGRAM BELUM YAAAA
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
@@ -161,8 +151,13 @@ n :-
     X2 is X,
     write([X2,Y2]),nl,
     retract(player_position(X,Y)),
-	asserta(player_position(X2,Y2)), !.
+	asserta(player_position(X2,Y2)),roll, !.
 
+n :-
+    player_position(_,Y),
+    Y < 2,
+    write('nabrak bray'),nl,
+    !.
 
 s :-
     player_position(X,Y),
@@ -172,7 +167,24 @@ s :-
     X2 is X,
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
-	asserta(player_position(X2,Y2)), !.
+	asserta(player_position(X2,Y2)),
+    roll, !.
+
+s :-
+    player_position(_,Y),
+    tinggiPeta(YY),
+    YYY is YY-1,
+    Y > YYY,
+    write('nabrak bray'),nl,
+    !.
+
+e :-
+    player_position(X,_),
+    lebarPeta(XX),
+    XXX is XX-1,
+    X > XXX,
+    write('nabrak bray'),nl,
+    !.
 
 e :-
     player_position(X,Y),
@@ -182,9 +194,14 @@ e :-
 	X2 is X+1,
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
-	asserta(player_position(X2,Y2)), !.
+	asserta(player_position(X2,Y2)),
+    roll, !.
 
-
+w :-
+    player_position(X,_),
+    X < 2,
+    write('nabrak bray'),nl,
+    !.
 
 w :-
     player_position(X,Y),
@@ -193,7 +210,35 @@ w :-
     X2 is X-1,
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
-	asserta(player_position(X2,Y2)), !.
+	asserta(player_position(X2,Y2)), 
+    roll.
+
+roll :-
+    posisiGym(A,B),
+    player_position(X,Y),
+    X =:= A, Y =:= B,
+    write('welcome to the gym!'),nl, !.
+
+roll :-
+    posisiGym(A,_),
+    player_position(X,_),
+    A =\= X,
+    random(1,100,X),
+    encounterroll(X),!.
+
+roll :-
+    posisiGym(_,B),
+    player_position(_,Y),
+    B =\= Y,
+    random(1,100,X),
+    encounterroll(X),!.
+
+
+encounterroll(X) :-
+    X > 90 -> (write('anda bertemu pokemon legendary'), !);
+    (X < 90, X > 60) -> (write('anda bertemu pokemon biasa'), !);
+    write('moved'),
+    !.
 
 
 
