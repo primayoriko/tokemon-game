@@ -13,14 +13,14 @@ check_inv(X):-
 
 
 printInventory :-
-	inventory(A,B,C,D,E,F,G),
-	write(A),nl,
+	forall(inventory(A,B,C,D,E,F,G),
+	(write(A),nl,
 	write(B),nl,
 	write(C),nl,
 	write(D),nl,
 	write(E),nl,
 	write(F),nl,
-	write(G),nl,!.
+	write(G),nl)),!.
 
 init_player :-
 	asserta(gameMain(1)),
@@ -28,7 +28,7 @@ init_player :-
 	asserta(lagi_ketemu(0)),
 	asserta(battle_status(0)),
 	write('generating tokemon'),nl,
-	generateTokemon,!.
+	generateTokemon,generateTokemon,!.
 
 addToInventory(Tokemon) :-
 	maxInventory(X),

@@ -6,6 +6,7 @@
 :- dynamic(lagi_pick/1).
 :- dynamic(battle_status/1).
 :- dynamic(finish_battle/1).
+:- dynamic(tangkaptime/1).
 
 :- include('player.pl').
 
@@ -16,6 +17,7 @@
 
 digym(0).
 udahheal(0).
+tangkaptime(0).
 finish_battle(0).
 
 fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
@@ -51,26 +53,6 @@ pick(X) :-  battle_status(1),
 
 
 
-capture :- 
-            /* Kondisi prasyarat tak terpenuhi */
-            write('Anda mesti baru saja mengalahkan tokemon untuk capture!!'),nl,!.
-
-capture :- 
-            /* Kondisi prasyarat tak terpenuhi krn inven penuh*/
-            inventory_used(6),
-            write('Inventory penuh!! Drop salah satu tokemon pada inventory!'),nl,!.
-
-capture :- 
-            random(1,100,Y),
-            ((current_tokemon2(X,_,_), X>12) -> Y < 80 ; Y < 20),
-            write('Tokemon gagal di-capture'),nl,!.
-
-capture :-  
-            /* aksi di capture  */
-            !.
-
-capture :- 
-            write('Anda gagal men-capturenya!, better luck next time!!'), nl.
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
@@ -109,12 +91,31 @@ attack :-
             B2 is B - H, F2 is F-D, 
             ((B2 >0, F2 > 0) ->
             (retract(current_tokemon1(A,B,C,D)),retract(current_tokemon2(E,F,G,H)),
-            asserta(current_tokemon1(A,B2,C,D)),asserta(current_tokemon2(E,F2,G,H)),tulis_battle) ;
-            ((B2 > 0 , F2 =< 0) -> (write('YOU WONNNNNNN!!'),nl, retract(battle_status(1)), assert(battle_status(0)));(
-                    (B2 =< 0, F2 > 0) -> (write('u lose'),nl) ;write('go')
-            ) ))
+            asserta(current_tokemon1(A,B2,C,D)),asserta(current_tokemon2(E,F2,G,H)),tulis_battle) ;(
+            ((B2 > 0 , F2 =< 0) ->  win;(
+                    (B2 =< 0, F2 > 0) -> (write('u lose'),nl) ;write('seri'))
+            )))
             ,!.
 
+win :-
+        write('YOU WONNNNNNN!!'),nl, retract(battle_status(1)), assert(battle_status(0)),
+        current_tokemon1(A,B,_,_),
+        inventory(D,E,F,G,H,I,A),
+        retract(inventory(D,E,F,G,H,I,A)), asserta(inventory(D,B,F,G,H,I,A)),
+        retract(tangkaptime(0)),assert(tangkaptime(1)),
+        write('Do you want to capture the pokemon?, walk away if you dont'), nl, !.
+
+capture :-
+        \+tangkaptime(1),
+        write('u need to win a fight'),nl,
+        !.
+
+capture :-
+        current_tokemon2(X,_,_,_),
+        tokemon(A,B,C,D,E,F,X),
+        assertz(inventory(A,B,C,D,E,F,X)),
+        write('added' ),write(A),write(' to inventory'),!.
+        
 specialattack :- 
             battle_status(0),
             write('Tidak sedang bertempur mas, mbak'),nl,!.

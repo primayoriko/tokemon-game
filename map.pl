@@ -267,7 +267,7 @@ battletest(X) :-
     write('fight or run?'),nl,!.
 
 pick(X) :-
-    tokemon(X,B,C,D,E,F,G),
+    inventory(X,B,C,D,E,F,G),
     write('anda memilih '), write(X),nl,
     asserta(current_tokemon1(G,B,1,C)),
     tulis_battle.

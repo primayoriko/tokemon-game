@@ -72,3 +72,25 @@ attack :-
             retractall(current_tokemon1(_,_,_,_)),retractall(current_tokemon2(_,_,_,_)),
             assert(current_tokemon1(X,D2,_)), assert(current_tokemon2(Y,F2,_)),
             calc_health.
+
+
+capture :- 
+            /* Kondisi prasyarat tak terpenuhi */
+            write('Anda mesti baru saja mengalahkan tokemon untuk capture!!'),nl,!.
+
+capture :- 
+            /* Kondisi prasyarat tak terpenuhi krn inven penuh*/
+            inventory_used(6),
+            write('Inventory penuh!! Drop salah satu tokemon pada inventory!'),nl,!.
+
+capture :- 
+            random(1,100,Y),
+            ((current_tokemon2(X,_,_), X>12) -> Y < 80 ; Y < 20),
+            write('Tokemon gagal di-capture'),nl,!.
+
+capture :-  
+            /* aksi di capture  */
+            !.
+
+capture :- 
+            write('Anda gagal men-capturenya!, better luck next time!!'), nl.
