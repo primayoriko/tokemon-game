@@ -5,13 +5,15 @@
 :- dynamic(posisiGym/2).
 :- dynamic(rintangan/2).
 :- dynamic(exploring_status/1).
+:- dynamic(ctrheal/1).
 
 init_map :-
-    exploring_status(1),s
+    exploring_status(1),
     random(10,50,X),
     random(10,50,Y),
     random(1,X,XGym),
     random(1,Y,YGym),
+    asserta(ctrheal(0)),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
     asserta(posisiXGym(XGym,YGym)),
@@ -49,7 +51,8 @@ isRintangan(X,Y) :-
     Y =:= B,
     !.
 
-% PRINT KEBERJALANAN PROGRAM BELUM YAAAA
+
+
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
 printMap(X,Y) :-
@@ -76,7 +79,7 @@ generateRintangan :-
     YMax is Y,
     Sum is round(X*Y/10),
         
-    forall(between(1,Sum,S), (
+    forall(between(1,Sum,_), (
         random(XMin,XMax, A),
         random(YMin,YMax, B),
         asserta(rintangan(A,B))
@@ -138,3 +141,65 @@ w :-
 	write([X2,Y2]),nl,
     retract(player_position(X,Y)),
 	asserta(player_position(X2,Y2)), !.
+
+/* BUAT DEBUGGGGGG DOANGGGGG */
+
+goToGym :-
+    posisiGym(A,B),
+    X2 is A,
+    Y2 is B,
+    retract(player_position(_,_)),
+	asserta(player_position(X2,Y2)), !.
+
+setHealthTo0 :- 
+    Y is 0,
+    retract(inventory(Tokemon,_,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+
+setHealthToFull :- 
+    inventory(Tokemon,Health,N,S,NS,T,I),
+    tokemon(Tokemon,Health1,_,_,_,_,_),
+    Y is Health1,
+    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+
+heal :-
+    /* Pemain sudah pernah melakukan heal */
+    ctrheal(1),
+    write("Tokemon gagal disembuhkan. Anda sudah menggunakan fitur ini."),
+    nl,
+    !. 
+heal :-
+    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,_),
+    posisiGym(A,_),
+    X =\= A,
+    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
+    nl,
+    !.
+
+heal :-
+    /* Pemain belum pernah melakukan heal dan TIDAK berada di posisi Gym*/
+    ctrheal(0),
+    player_position(_,Y),
+    posisiGym(_,B),
+    Y =\= B,
+    write("Anda tidak bisa menggunakan fitur ini karena tidak berada pada posisi Gym."),
+    nl,
+    !.
+
+
+heal :-
+    /* Pemain belum pernah melakukan heal dan berada di posisi Gym*/
+    ctrheal(0),
+    player_position(X,Y),
+    posisiGym(A,B),
+    X =:= A,
+    Y =:= B,
+    setHealthToFull,
+    write("Tokemon anda sudah disembuhkan!"),
+    nl,
+    retract(ctrheal(_)),
+    asserta(ctrheal(1)) 
+    . 
