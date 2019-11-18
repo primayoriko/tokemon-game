@@ -1,5 +1,7 @@
-/*tokemon(nama,max health, nattack,sattack,namasatack,type,id)*/
-tokemon(imbamon,120,15,90,international_mathematics_attack,fire,1).
+:- dynamic(tokemon/7).
+
+/*tokemon(nama, max health, nattack, sattack, namasatack, type, id)*/
+tokemon(imbamon,120,15,90,imi_attack,fire,1).
 
 tokemon(junhomon,150,10,95,korean_idol_dance,water,2).
 
@@ -25,6 +27,10 @@ tokemon(athenamon,135,25,70,judgement,water,12).
 
 tokemon(inkmon,350,40,140,call_juke,fire,13).
 
-tokemon(yorikomon,300,45,160,carry,water,14).
+tokemon(yorikomon,300,45,160,carry,fire,14).
 
 tokemon(iqbalmon,320,35,150,destroy,grass,15).
+
+tokemon(malmon,200,30,200,bronze_medal_slash,water,16).
+
+tokemon(ascalon,5500,100,700,null_void,fire,17).

@@ -1,61 +1,56 @@
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
-% :- dynamic(player_inv1/3).
-% :- dynamic(player_inv2/3).
-% :- dynamic(player_inv3/3).
-% :- dynamic(player_inv4/3).
-% :- dynamic(player_inv5/3).
-% :- dynamic(player_inv6/3).
-:- dynamic(inventory/7).                /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
-:- dynamic(maxInventory/1).             /* maxInventory(Maks) */
+:- dynamic(inventory/8).                
+:- dynamic(maxInventory/1).             
+:- dynamic(gameMain/1).
+
+/* inventory(nama, current health, nattack, sattack, namasatack, type, id, lvl) */
+/* maxInventory(Maks) */
 
 :- include('tokemon.pl').
 :- include('utility.pl').
 
+check_inv(X):-
+	inventory(X,_,_,_,_,_,_,_).
+
+printInventory :-
+	forall(inventory(A,B,C,D,E,F,G,H),
+	(write(A),nl,
+	write(B),nl,
+	write(C),nl,
+	write(D),nl,
+	write(E),nl,
+	write(F),nl,
+	write(G),nl,
+	write(H),nl)),!.
+
 init_player :-
 	asserta(gameMain(1)),
-	% lebarPeta(L),
-	% tinggiPeta(T),
-	% random(1,L,X),
-	% random(1,T,Y),
-	% asserta(player(X,Y)),
-	% asserta(healthpoint(100)),
-	% asserta(armor(0)),
-	% asserta(senjata(sniper_rifle,40,3)),
-	asserta(maxInventory(6)),
-	generateTokemon
-    % 
-    .
-
-
-cekPanjangInv(Panjang) :-
-	findall(B,inventory(B,_,_,_,_,_,_),ListBanyak),
-	length(ListBanyak,Panjang).
-
-addToInventory(_) :-
-	cekPanjangInv(Panjang),
-	maxInventory(Maks),
-    (Panjang+1) > Maks,
-    write("Inventory full!"),
-    nl,
-    !,
-    fail.
+	asserta(maxInventory(0)),
+	asserta(lagi_ketemu(0)),
+	asserta(battle_status(0)),
+	write('generating tokemon'),nl,
+	generateTokemon,generateTokemon,!.
 
 addToInventory(Tokemon) :-
-    /*Inventory muat*/
+	maxInventory(X),
+	X2 is X+1,
+	retract(maxInventory(X)),
+	asserta(maxInventory(X2)),
     tokemon(Tokemon,H,N,S,NS,T,I),  
-	asserta(inventory(Tokemon,H,N,S,NS,T,I)),!.
-
+	assertz(inventory(Tokemon,H,N,S,NS,T,I,1)),!.
 
 delFromInventory(Tokemon) :-
-	\+inventory(Tokemon,_,_,_,_,_,_),!,fail.
+	\+inventory(Tokemon,_,_,_,_,_,_,_),!,fail.
+
 delFromInventory(Tokemon) :-
-	inventory(Tokemon,_,_,_,_,_,_),
-	retract(inventory(Tokemon,_,_,_,_,_,_)),
+	inventory(Tokemon,_,_,_,_,_,_,_),
+	retract(inventory(Tokemon,_,_,_,_,_,_,_)),
 	!.
 
-generateTokemon:-
+generateTokemon :-
 	random(1,12,X),
-	tokemon(Tokemon,_,_,_,_,_,X),
+	tokemon(Tokemon,_,_,_,_,_,X,_),
+	write('Adding '),write(Tokemon),write(' to your inventory!'),nl,
 	addToInventory(Tokemon),
 	!.
