@@ -1,6 +1,3 @@
-:- dynamic(digym/1).
-:- dynamic(udahheal/1).
-:- dynamic(maucapture/1).
 :- dynamic(udah_lari/1).
 :- dynamic(lagi_ketemu/1).
 :- dynamic(lagi_pick/1).
@@ -20,17 +17,15 @@ udahheal(0).
 tangkaptime(0).
 pick_time(0).
 
-fight :-
-        lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
-        retract(pick_time(0)),assert(pick_time(1)),
-        retract(battle_status(0)), asserta(battle_status(1)),
-        write('Pilih tokemonmu dari tokemon yang tersedia!'),
-        !.
-
 fight :- 
         lagi_ketemu(0),
-        write('Tidak ada Tokemon yang bisa dilawan!'),nl.
+        write('Tidak ada Tokemon yang bisa dilawan!'),nl,!.
 
+fight :-
+        retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
+        retract(pick_time(0)),assert(pick_time(1)),
+        retract(battle_status(0)), asserta(battle_status(1)),
+        write('Pilih tokemonmu dari tokemon yang tersedia!').
           
 run :-  lagi_ketemu(0),
         write('Tidak bisa lari jika pertarungannya tidak ada!'),nl,
@@ -40,8 +35,6 @@ run :-  lagi_ketemu(1),
         write('anda berlari seperti pengecut'), nl,
         retract(lagi_ketemu(1)),asserta(lagi_ketemu(0)),
         retract(current_tokemon2(A,B,C,D)), !.
-        
-
 
 tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,_,_,_,E,Y), current_tokemon2(Y,F,_,_), 
                     write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
