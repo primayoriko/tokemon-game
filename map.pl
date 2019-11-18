@@ -7,7 +7,7 @@
 
 
 :- include('battle.pl').
-/*UNTUK DEBUG*/
+
 
 init_map :-
     random(10,20,X),
@@ -50,7 +50,9 @@ isRintangan(X,Y) :-
     X =:= A,
     Y =:= B,
     !.
-/* BUAT DEBUGGGGGG DOANGGGGG */
+
+isLegendary(A,B):-
+    posisiLegendary(_,A,B).
 
 goToGym :-
     posisiGym(A,B),
@@ -120,9 +122,6 @@ printMap(X,Y) :-
 printMap(_,_) :-
 	write('-').   
 
-isLegendary(A,B):-
-    posisiLegendary(_,A,B).
-
 generateLegendary:-
     lebarPeta(X),
     tinggiPeta(Y),
@@ -132,7 +131,7 @@ generateLegendary:-
     YMax is Y,
 
     forall(between(13,17,R), (
-        tokemon(N,_,_,_,_,_,R,_),
+        tokemon(N,_,_,_,_,_,R),
         random(XMin,XMax, A),
         random(YMin,YMax, B),
         assert(posisiLegendary(N,A,B))
