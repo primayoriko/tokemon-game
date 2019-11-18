@@ -20,9 +20,8 @@ fight :-
         write('Tidak ada Tokemon yang bisa dilawan!'),nl,!.
 
 fight :-
-        retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
-        retract(pick_time(0)),assert(pick_time(1)),
-        retract(battle_status(0)), asserta(battle_status(1)),
+        retractall(lagi_ketemu(_)), asserta(lagi_ketemu(0)),
+        retractall(pick_time(_)),asserta(pick_time(1)),
         write('Pilih tokemonmu dari tokemon yang tersedia!').
           
 run :-  lagi_ketemu(0),
@@ -184,6 +183,5 @@ specialattack :-
 
 battle:- 
     retractall(lagi_ketemu(_)), asserta(lagi_ketemu(1)),
-    retractall(pick_time(_)), asserta(pick_time(1)),
-    write('anda bertemu tokemon liar dan ganas!'),
+    write('anda bertemu tokemon liar dan ganas!'),nl,
     write('fight or run?'),nl,!.
