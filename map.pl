@@ -130,7 +130,7 @@ generateLegendary:-
 	YMin is 2,
     YMax is Y,
 
-    forall(between(13,17,R), (
+    forall(between(13,18,R), (
         tokemon(N,_,_,_,_,_,R),
         random(XMin,XMax, A),
         random(YMin,YMax, B),
