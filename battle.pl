@@ -7,6 +7,7 @@
 :- dynamic(battle_status/1).
 :- dynamic(finish_battle/1).
 :- dynamic(tangkaptime/1).
+:- dynamic(pick_time/1).
 
 :- include('player.pl').
 
@@ -19,11 +20,14 @@ digym(0).
 udahheal(0).
 tangkaptime(0).
 finish_battle(0).
+pick_time(0).
 
-fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
-         retract(battle_status(0)), asserta(battle_status(1)),
-         write('Pilih tokemonmu dari tokemon yang tersedia!'),
-         !.
+fight :-
+        lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
+        retract(pick_time(0)),assert(pick_time(1)),
+        retract(battle_status(0)), asserta(battle_status(1)),
+        write('Pilih tokemonmu dari tokemon yang tersedia!'),
+        !.
 
 fight :- 
         lagi_ketemu(0),
@@ -45,9 +49,9 @@ tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,
                     write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
                     write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,!.
 
-pick(X) :- battle_status(0), write('Tidak ada pertarungan saat ini'),nl,!.
+pick(X) :- battle_status(0),pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
 
-pick(X) :-  battle_status(1),
+pick(X) :-  battle_status(1),pick_time(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
             write('pilih Tokemon lain!'),nl,!.
 
@@ -93,13 +97,23 @@ attack :-
             (retract(current_tokemon1(A,B,C,D)),retract(current_tokemon2(E,F,G,H)),
             asserta(current_tokemon1(A,B2,C,D)),asserta(current_tokemon2(E,F2,G,H)),tulis_battle) ;(
             ((B2 > 0 , F2 =< 0) ->  win;(
-                    (B2 =< 0, F2 > 0) -> (write('u lose'),nl) ;write('seri'))
+                    (B2 =< 0, F2 > 0) -> (lose,nl) ;write('seri'))
             )))
             ,!.
 
-win :-
+lose :-
+        current_tokemon1(A,B,C,O),
+        retract(current_tokemon1(A,B,C,O)),
+        inventory(U,B,O,P,J,I,A),
+        retract(inventory(U,B,O,P,J,I,A)),
+        write(U),write(' has died, pick another'),nl,
+        retract(pick_time(0)),assert(pick_time(1)),
+        !.
+
+win :-  
         write('YOU WONNNNNNN!!'),nl, retract(battle_status(1)), assert(battle_status(0)),
-        current_tokemon1(A,B,_,_),
+        current_tokemon1(A,B,L,P),
+        retract(current_tokemon1(A,B,L,P)),
         inventory(D,E,F,G,H,I,A),
         retract(inventory(D,E,F,G,H,I,A)), asserta(inventory(D,B,F,G,H,I,A)),
         retract(tangkaptime(0)),assert(tangkaptime(1)),
@@ -111,7 +125,10 @@ capture :-
         !.
 
 capture :-
-        current_tokemon2(X,_,_,_),
+        tangkaptime(1),
+        retract(tangkaptime(1)),assert(tangkaptime(0)),
+        current_tokemon2(X,P,O,L),
+        retract(current_tokemon2(X,P,O,L)),
         tokemon(A,B,C,D,E,F,X),
         assertz(inventory(A,B,C,D,E,F,X)),
         write('added' ),write(A),write(' to inventory'),!.

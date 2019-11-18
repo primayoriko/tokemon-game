@@ -3,6 +3,7 @@
 :- dynamic(inventory/7).                /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
 :- dynamic(maxInventory/1).             /* maxInventory(Maks) */
 :- dynamic(gameMain/1).
+:- dynamic(jumlapokemon/1).
 
 :- include('tokemon.pl').
 :- include('utility.pl').
@@ -10,6 +11,7 @@
 
 check_inv(X):-
 	inventory(X,_,_,_,_,_,_).
+
 
 
 printInventory :-
@@ -24,7 +26,7 @@ printInventory :-
 
 init_player :-
 	asserta(gameMain(1)),
-	asserta(maxInventory(1)),
+	asserta(maxInventory(0)),
 	asserta(lagi_ketemu(0)),
 	asserta(battle_status(0)),
 	write('generating tokemon'),nl,
