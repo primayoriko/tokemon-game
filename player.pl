@@ -29,7 +29,7 @@ init_player :-
 	asserta(maxInventory(0)),
 	asserta(lagi_ketemu(0)),
 	asserta(battle_status(0)),
-	write('generating tokemon'),nl,
+	write('Generating your own tokemon....'),nl,
 	generateTokemon,generateTokemon,!.
 
 addToInventory(Tokemon) :-
