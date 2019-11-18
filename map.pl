@@ -363,6 +363,6 @@ battletest(X) :-
     retract(lagi_ketemu(0)),
     asserta(lagi_ketemu(1)),
     tokemon(A,B,C,D,E,F,X),
-    write('anda bertemu '), write(A), write(' liar!'),
+    write('Anda bertemu '), write(A), write(' liar!'), nl,
     asserta(current_tokemon2(X,B,1,C)),
-    write('fight or run?'),nl,!.
+    write('Fight or run?'),nl,!.

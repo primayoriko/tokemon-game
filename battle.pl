@@ -28,7 +28,8 @@ fight :-
         lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
         retract(pick_time(0)),assert(pick_time(1)),
         retract(battle_status(0)), asserta(battle_status(1)),
-        write('Pilih tokemonmu dari tokemon yang tersedia!'),
+        write('Pilih tokemonmu dari tokemon yang tersedia!'),nl,
+        printInventory,
         !.
 
 fight :- 
@@ -220,7 +221,7 @@ lose :-
         retract(current_tokemon1(A,B,LV,O)),
         retract(inventory(U,M,O,P,J,I,A,LV)),
         write(U),write(' has died, pick another'),nl,
-        retract(pick_time(0)),assert(pick_time(1)),
+        retract(pick_time(0)),assert(pick_time(1)),printInventory,
         !.
 
 

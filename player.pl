@@ -41,7 +41,8 @@ addToInventory(Tokemon) :-
 	X2 is X+1,
 	retract(maxInventory(X)),
 	asserta(maxInventory(X2)),
-    tokemon(Tokemon,H,N,S,NS,T,I),  
+    tokemon(Tokemon,H,N,S,NS,T,I),
+	write(Tokemon), write(' added to your inventory!'), nl,  
 	assertz(inventory(Tokemon,H,N,S,NS,T,I,1)),!.
 
 delFromInventory(Tokemon) :-
