@@ -4,8 +4,6 @@
 :- dynamic(rintangan/2).
 :- dynamic(ctrheal/1).
 
-:- include('player.pl').
-:- include('tokemon.pl').
 :- include('battle.pl').
 
 init_map :-
