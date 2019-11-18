@@ -17,8 +17,6 @@ posisiLegendary(ascalon,22,22).
 init_map :-
     random(10,20,X),
     random(10,20,Y),
-    random(1,X,XGym),
-    random(1,Y,YGym),
     asserta(ctrheal(0)),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
@@ -62,7 +60,7 @@ goToGym :-
     posisiGym(A,B),
     X2 is A,
     Y2 is B,
-    retract(player_position(X,Y)),
+    retract(player_position(_,_)),
 	asserta(player_position(X2,Y2)), !.
 
 setHealthTo0 :-
@@ -87,7 +85,7 @@ heal :-
     setHealthToFull,
     write('Tokemon anda sudah disembuhkan!'),
     nl,
-    retract(ctrheal(Counter)),
+    retract(ctrheal(_)),
     asserta(ctrheal(1)) ,!. 
     
 heal :-
