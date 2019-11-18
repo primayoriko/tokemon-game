@@ -14,30 +14,53 @@ start :-
 
 start :-
 	nl,
-	write(' 	╔════╗╔═══╗╔╗╔═╗╔═══╗╔═╗╔═╗╔═══╗╔═╗─╔╗'),nl,
-	write('	║╔╗╔╗║║╔═╗║║║║╔╝║╔══╝║║╚╝║║║╔═╗║║║╚╗║║'),nl,
-	write('	╚╝║║╚╝║║─║║║╚╝╝─║╚══╗║╔╗╔╗║║║─║║║╔╗╚╝║'),nl,
-	write('	──║║──║║─║║║╔╗║─║╔══╝║║║║║║║║─║║║║╚╗║║'),nl,
-	write('	──║║──║╚═╝║║║║╚╗║╚══╗║║║║║║║╚═╝║║║─║║║'),nl,
-	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,
-	help,nl,nl,
-	legend,nl,nl,
-	write('Halo! <story>.'),nl,
+	write('88888 .d88b. 8  dP 8888 8b   d8 .d88b. 8b  8 '),nl,
+	write('  8   8P  Y8 8wdP  8www 8YbmdP8 8P  Y8 8Ybm8 '),nl,
+	write('  8   8b  d8 88Yb  8    8  "  8 8b  d8 8  "8 '),nl,
+	write('  8    Y88P  8  Yb 8888 8     8  Y88P  8   8 '),nl,nl,nl,
+	write('Kamu adalah mahasiswa biasa, normal, dan punya sedikit teman, dan berharap memiliki masa depan yang cerah.'),nl,
+	write('Hari-hari berjalan dengan cukup normal, dan dibumbui dengan sedikit perasaan depresi khas mahasiswa.'),nl,
+	write('Hingga suatu hari, saat kamu sedang merenung di plaza widya, kamu melihat meteor dengan kecepatan tinggi '),nl,
+	write('dan menghantam bumi. Tanah bergetar hebat, dan seketika pandanganmu membuyar.'),nl,nl,
+	write('Saat tersadar, kamu didunia yang tidak sama lagi. Dunia dipenuhi makhluk-makhluk aneh. Berkat bantuan'),nl,
+	write('Prof. Rila M. yang telah menyelamatkanmu, kamu mengetahui meteor tersebut membawa wabah virus dan mengubah orang-orang'),nl,
+	write('menjadi makhluk unik bernama Tokemon. Kini Prof. Rila tengah mengembangkan serum untuk mengatasi wabah dan mengembalikan orang-orang.'),nl,
+	write('Kini tugasmu adalah membantu Prof Rila mengalahkan tokemon spesial yang luar biasa kuat dan mengambil sampel darahnya guna '),nl,
+	write('pembuatan serum. Kamu dibantu dengan alat hasil penelitian Prof. Rila bisa menjinakkan tokemon-tokemon tersebut'),nl,
+	write('sekarang bantu Prof. Rila untuk segera mengalahkan tokemon spesial sebelum korban-korban sulit ditolong kembali!'),nl,nl,nl,
+	help,nl,nl,nl,
+	legend,nl,nl,nl,
+	retract(game_status(0)),asserta(game_status(1)),
 	write('Selamat bermain! Good luck!'),nl,nl,
-	init_map,
-	init_player,
-	asserta(game_status(1)),
+	init_player, init_map,
 	!.
+
+quit :-
+	game_status(0),
+	write('Belum juga mulai gamenya -_-'),nl,!.
+   
+quit :-
+	game_status(1),retract(game_status(1)),assert(game_status(0)),
+	(udahheal(_)->retractall(udahheal(_))),assert(udahheal(0)),retract(tangkaptime(_)),assert(tangkaptime(0)),
+	retract(pick_time(_)),assert(pick_time(0)),
+	(lebarPeta(_)->retract(lebarPeta(_))),(tinggiPeta(_)->retract(tinggiPeta(_))),(posisiGym(_,_)->retractall(posisiGym(_,_))),(rintangan(_,_)->retractall(rintangan(_,_))),(ctrheal(_)->retractall(ctrheal(_))),
+	/*(posisiLegendary(_,_,_)->retractall(posisiLegendary(_,_,_))),*/
+	/*(udah_lari(_) -> retract(udah_lari(_))), (lagi_ketemu(_) -> retract(lagi_ketemu(_))),(battle_status(_) -> retract(battle_status(_))),
+	(digym(_)->retract(digym(_))),(maucapture(_)->retractall(maucapture(_))),(lagi_pick(_)->retractall(lagi_pick(_))),(finish_battle(_)->retractall(finish_battle(_))),
+	(current_tokemon1(_,_,_,_)-> retract(current_tokemon1(_,_,_,_))),(current_tokemon2(_,_,_,_) -> retract(current_tokemon2(_,_,_,_))),
+	(player_status(_)->retract(player_status(_))),*/ (player_position(_,_)->retract(player_position(_,_))),(inventory(_,_,_,_,_,_,_,_)->retractall(inventory(_,_,_,_,_,_,_,_))),(maxInventory(_)->retract(maxInventory(_))),(gameMain(_)->retractall(gameMain(_))),
+	write('Terima Kasih telah bermain!'),nl,
+	write('Sampai jumpa lagi!'),nl,!.
 
 help :-
 	write('Daftar Command : '),nl,
 	write('1. start : Untuk memulai permainan.'),nl,
 	write('2. map : Menampilkan peta beserta posisi pemain dan gym saat ini.'),nl,
 	write('3. heal : Mengobati tokemon yang dimiliki player saat ini(Hanya bisa di Gym Center "G").'),nl,
-	write('4. w : Bergerak kearah Utara(atas).'),nl,
-	write('5. s : Bergerak kearah Timur(kanan).'),nl,
-	write('6. a : Bergerak kearah Barat(kiri).'),nl,
-	write('7. d : Bergerak kearah Selatan(bawah).'),nl,
+	write('4. n : Bergerak kearah Utara(atas).'),nl,
+	write('5. e : Bergerak kearah Timur(kanan).'),nl,
+	write('6. w : Bergerak kearah Barat(kiri).'),nl,
+	write('7. s : Bergerak kearah Selatan(bawah).'),nl,
 	write('8. quit : Keluar dari permainan.'),nl,
 	write('9. pick(tokemon) : Memilih tokemon yang akan digunakan untuk bertarung(hanya dalam battle).'),nl,
 	write('10. attack : Melakukan serangan normal ke tokemon musuh(hanya dalam battle).'),nl,
@@ -139,7 +162,7 @@ printLegendaryTokemon(Tokemon):-
 	write('   Posisi: '),write(XX),write(','),write(YY),nl,
 	!.
 
-	
+
 /*loads(_) :-
 	game_status(mulai),
 	write('Kamu tidak bisa memulai game lainnya ketika ada game yang sudah dimulai.'), nl, !.

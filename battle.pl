@@ -8,6 +8,7 @@
 :- dynamic(finish_battle/1).
 :- dynamic(tangkaptime/1).
 :- dynamic(pick_time/1).
+:- dynamic(specials/1).
 
 :- include('player.pl').
 
@@ -58,6 +59,7 @@ pick(X) :-  battle_status(1),pick_time(1),
 
 
 pick(X) :-
+    asserta(specials(1)),
     battle_status(1),
     pick_time(1),
     inventory(X,B,C,_,_,_,G,LV),
@@ -120,11 +122,12 @@ attack :-
             !.
 
 attackenemy :-
-            current_tokemon1(A,B,C,D),current_tokemon2(E,_,_,H),
+            current_tokemon1(A,B,C,D),current_tokemon2(E,_,LV,H),
             tokemon(AA,_,_,_,_,_,E),tokemon(BB,_,_,_,_,_,A),
-            B2 is B - H,
+            H2 is H+((LV/8)*H),
+            B2 is B - H2,
             write(AA),write(' used normal attack!'),nl,
-            write(BB),write(' took '),write(H),write(' damage'), nl,nl,
+            write(BB),write(' took '),write(H2),write(' damage'), nl,nl,
             (B2 =< 0 -> lose;(
             retract(current_tokemon1(A,B,C,D)),asserta(current_tokemon1(A,B2,C,D)),!)),!.
 
@@ -135,7 +138,14 @@ special :-
             battle_status(0),
             write('Tidak sedang bertempur mas, mbak'),nl,!.
 
+special :- 
+        battle_status(1),
+        specials(0),
+        write('Tokemon anda terlalu lelah untuk menggunakan special attack lagi'),nl,
+        !.
+
 special :-
+            specials(1),
             battle_status(1),
             current_tokemon1(A,B,C,_), current_tokemon2(E,F,G,H),
             ((tokemon(N,_,_,S,P,grass,A),tokemon(NAMAM,_,_,_,_,water,E));(tokemon(N,_,_,S,P,water,A),tokemon(_,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(_,_,_,_,_,grass,E))),
@@ -143,31 +153,38 @@ special :-
             S2 is S*(1+(C/5)),
             B2 is B - H, F2 is (F-(S2*1.5)), 
             write('ITS SUPER EFFECTIVE'),nl,nl,
-            write(NAMAM),write(' took '),write(S2*1.5),write(' damage'),nl,
+            S3 is S2*1.5,
+            write(NAMAM),write(' took '),write(S3),write(' damage'),nl,
             ((B2 >0, F2 > 0) ->
             (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
             ((B2 > 0 , F2 =< 0) ->  win;(
                     (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            )))
+            ))),
+            retract(specials(_)),asserta(specials(0))
             ,!.
 
 special :-
+        specials(1),
+        
             battle_status(1),
             current_tokemon1(A,B,C,_), current_tokemon2(E,F,G,H),
             ((tokemon(N,_,_,S,P,water,A),tokemon(NAMAM,_,_,_,_,grass,E));(tokemon(N,_,_,S,P,grass,A),tokemon(_,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(_,_,_,_,_,water,E))),
             write(N),write(' used '),write(P),write('!'), nl,
             S2 is S*(1+(C/5)),
             B2 is B - H, F2 is (F-(S2*0.5)), 
+            S3 is S2*0.5,
             write('ITS NOT VERY EFFECTIVE.....'),nl,nl,
-            write(NAMAM),write(' took '),write(S2*0.5),write(' damage'),nl,
+            write(NAMAM),write(' took '),write(S3),write(' damage'),nl,
             ((B2 >0, F2 > 0) ->
             (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
             ((B2 > 0 , F2 =< 0) ->  win;(
                     (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            )))
+            ))),
+            retract(specials(_)),asserta(specials(0))
             ,!.
 
-special :-
+special :- 
+        specials(1),
             battle_status(1),
             current_tokemon1(A,B,C,_), current_tokemon2(E,F,G,H),
             tokemon(N,_,_,S,P,_,A),tokemon(NAMAM,_,_,_,_,_,E),
@@ -181,23 +198,30 @@ special :-
             asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
             ((F2 =< 0) ->  win;(
                     (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            )))
+            ))),
+            retract(specials(_)),asserta(specials(0))
             ,!.
 
 
 
-lose :- jumlapokemon(1),
+lose :- maxInventory(1),
         write('you lose'), 
         retract(gameMain(1)),
         asserta(gameMain(0)),
         retract(battle_status(1)),
         asserta(battle_status(0)),
+        current_tokemon1(A,B,C,D),
+        retract(current_tokemon1(A,B,C,D)),
+        retract(inventory(_,_,_,_,_,_,A,_)),
         nl, !.
 
 
 lose :-
         maxInventory(X),
+        X =\= 1,
         X2 is X-1,
+        specials(X),
+        retract(specials(X)),
         retract(maxInventory(X)),
         assert(maxInventory(X2)),
         current_tokemon1(A,B,_,O),
@@ -217,6 +241,8 @@ win :-
         current_tokemon2(AA,_,_,_),
         tokemon(NA,_,_,_,_,_,AA),
         tokemon(_,HEA,_,_,_,_,A),
+        specials(X),
+        retract(specials(X)),
         write(NA),write(' has died'), nl,
         LV is L + 1,
         retract(current_tokemon1(A,B,L,P)),

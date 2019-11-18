@@ -21,8 +21,8 @@ init_map :-
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
     asserta(player_position(1,1)),
-    generateRintangan,
     generateGym,
+    generateRintangan,
     !.
     
 isTopBorder(_,Y) :- 
@@ -65,15 +65,15 @@ goToGym :-
 
 setHealthTo0 :-
     /* BUAT DEBUGGGGGG DOANGGGGG */
-    forall(retract(inventory(Tokemon,_,N,S,NS,T,I)),asserta(inventory(Tokemon,0,N,S,NS,T,I))).
+    forall(retract(inventory(Tokemon,_,N,S,NS,T,I,J)),asserta(inventory(Tokemon,0,N,S,NS,T,I,J))).
 
 setHealthToFull :-
     /* Prosedur untuk mengheal semua tokemon */
-    forall(inventory(Tokemon,Health,N,S,NS,T,I),
+    forall(inventory(Tokemon,Health,N,S,NS,T,I,J),
     forall(tokemon(Tokemon,Health1,_,_,_,_,_),
     forall(Y is Health1,
-    forall(retract(inventory(Tokemon,Health,N,S,NS,T,I)),
-    asserta(inventory(Tokemon,Y,N,S,NS,T,I)))))).
+    forall(retract(inventory(Tokemon,Health,N,S,NS,T,I,J)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I,J)))))).
 
 heal :-
     /* Pemain belum pernah melakukan heal dan berada di posisi Gym*/
@@ -170,16 +170,19 @@ posi :-
     write(Y), ! .
 
 n:-
+    gameMain(1),
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 n :-
+    gameMain(1),
     player_position(_,Y),
     Y < 2,
     write('nabrak bray'),nl,
     !.
 
 n:-
+    gameMain(1),
     player_position(X,Y),
 	Y2 is Y-1,
     X2 is X,
@@ -187,6 +190,7 @@ n:-
     write('gabisa cuy ada rintangan'),!.
 
 n :-
+    gameMain(1),
     tangkaptime(J),
     retract(tangkaptime(J)),asserta(tangkaptime(0)),
     (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
@@ -199,10 +203,12 @@ n :-
 
 
 s :-
+    gameMain(1),
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 s :-
+    gameMain(1),
     player_position(_,Y),
     tinggiPeta(YY),
     YYY is YY-1,
@@ -211,6 +217,7 @@ s :-
     !.
 
 s :-
+    gameMain(1),
     player_position(X,Y),
 	Y2 is Y+1,
     X2 is X,
@@ -218,6 +225,7 @@ s :-
     write('gabisa cuy ada rintangan'),!.
 
 s :-
+    gameMain(1),
     tangkaptime(J),
     retract(tangkaptime(J)),asserta(tangkaptime(0)),
     (J =:= 1 -> (write('u have left the pokemon'),(current_tokemon2(L,K,O,P),retract(current_tokemon2(L,K,O,P))),nl) ; nl),
@@ -232,10 +240,12 @@ s :-
     roll, !.
 
 e:-
+    gameMain(1),
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 e :-
+    gameMain(1),
     player_position(X,_),
     lebarPeta(XX),
     XXX is XX-1,
@@ -244,6 +254,7 @@ e :-
     !.
 
 e :-
+    gameMain(1),
     player_position(X,Y),
 	Y2 is Y,
     X2 is X+1,
@@ -251,6 +262,7 @@ e :-
     write('gabisa cuy ada rintangan'),!.
 
 e :-
+    gameMain(1),
     tangkaptime(J),
     retract(tangkaptime(J)),asserta(tangkaptime(0)),
     (J =:= 1 -> (write('u have left the pokemon'),(current_tokemon2(L,K,O,P),retract(current_tokemon2(L,K,O,P))),nl) ; nl),
@@ -265,16 +277,19 @@ e :-
     roll, !.
 
 w :-
+    gameMain(1),
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 w :-
+    gameMain(1),
     player_position(X,_),
     X < 2,
     write('nabrak bray'),nl,
     !.
 
 w :-
+    gameMain(1),
     player_position(X,Y),
 	Y2 is Y,
     X2 is X-1,
@@ -282,6 +297,7 @@ w :-
     write('gabisa cuy ada rintangan'),!.
 
 w :-
+    gameMain(1),
     tangkaptime(J),
     retract(tangkaptime(J)),asserta(tangkaptime(0)),
     (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
@@ -309,4 +325,14 @@ roll :-
     random(1,100,C), encounterroll(C),!.
 
 encounterroll(X) :-
-    X > 20 -> write('You have moved');battle.
+    X > 15 -> write('moved');
+    (X < 12) -> battletest(X).
+
+
+battletest(X) :- 
+    retract(lagi_ketemu(0)),
+    asserta(lagi_ketemu(1)),
+    tokemon(A,B,C,D,E,F,X),
+    write('anda bertemu '), write(A), write(' liar!'),
+    asserta(current_tokemon2(X,B,1,C)),
+    write('fight or run?'),nl,!.

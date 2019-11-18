@@ -1,7 +1,8 @@
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
 :- dynamic(inventory/8).                
-:- dynamic(maxInventory/1).             
+:- dynamic(maxInventory/1). 
+:- discontiguous(maxInventory/1).           
 :- dynamic(gameMain/1).
 
 /* inventory(nama, current health, nattack, sattack, namasatack, type, id, lvl) */
@@ -34,7 +35,7 @@ init_player :-
 	asserta(lagi_ketemu(0)),
 	asserta(battle_status(0)),
 	write('Prof. Rila memberikanmu tokemon! Silahkan cek inventory-mu!'),nl,
-	generateTokemon,generateTokemon,!.
+	generateTokemon,!.
 
 addToInventory(Tokemon) :-
 	maxInventory(X),
