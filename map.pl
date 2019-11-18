@@ -294,8 +294,8 @@ roll :-
 
 
 encounterroll(X) :-
-    X > 15 -> write('moved');
-    (X < 12) -> battletest(X).
+    X > 20 -> write('moved');
+    (X < 21) -> battletest(X).
 
 
 battletest(X) :- 
