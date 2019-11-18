@@ -1,4 +1,3 @@
-:- dynamic(player_status/1).
 :- dynamic(player_position/2).
 :- dynamic(inventory/8).                
 :- dynamic(maxInventory/1). 

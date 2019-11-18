@@ -162,22 +162,52 @@ printLegendaryTokemon(Tokemon):-
 	write('   Posisi: '),write(XX),write(','),write(YY),nl,
 	!.
 
+save(_):-
+	\+game_status(1),
+	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
+	write('Gunakan command "start." untuk memulai game.'), nl, !.
+save(FileName):- 
+	tell(FileName),
+		forall(game_status(X), (write(game_status(X)),write('.'),nl)),
+		
+		forall(tinggiPeta(L), (write(tinggiPeta(L)),write('.'),nl)),
+		forall(lebarPeta(L), (write(lebarPeta(L)),write('.'),nl)),
+		forall(ctrheal(C), (write(ctrheal(C)),write('.'),nl)),
+		forall(rintangan(X,Y),(write(rintangan(X,Y)),write('.'),nl )),
+		forall(posisiGym(X,Y),(write(posisiGym(X,Y)),write('.'),nl )),
+		forall(posisiLegendary(N,X,Y),(write(posisiLegendary(N,X,Y)),write('.'),nl )),
 
-/*loads(_) :-
-	game_status(mulai),
+		forall(player_position(Xp,Yp), (write(player_position(Xp,Yp)),write('.'),nl)),
+		forall(maxInventory(M), (write(maxInventory(M)),write('.'),nl)),
+		forall(inventory(A,B,C,D,E,F,G,H), (write(inventory(A,B,C,D,E,F,G,H)),write('.'),nl)),
+		forall(gameMain(C), (write(gameMain(C)),write('.'),nl)),
+		
+		forall(digym(X), (write(digym(X)),write('.'),nl)),
+		forall(udahheal(X), (write(udahheal(X)),write('.'),nl)),
+		forall(maucapture(X), (write(maucapture(X)),write('.'),nl)),
+		forall(udah_lari(X), (write(udah_lari(X)),write('.'),nl)),
+		forall(lagi_ketemu(X), (write(lagi_ketemu(X)),write('.'),nl)),
+		forall(lagi_pick(X), (write(lagi_pick(X)),write('.'),nl)),
+		forall(battle_status(X), (write(battle_status(X)),write('.'),nl)),
+		forall(finish_battle(X), (write(finish_battle(X)),write('.'),nl)),
+		forall(tangkaptime(X), (write(tangkaptime(X)),write('.'),nl)),
+		forall(pick_time(X), (write(pick_time(X)),write('.'),nl)),
+		forall(specials(X), (write(specials(X)),write('.'),nl)),		
+		forall(current_tokemon1(X,Y,Z,W),(write(current_tokemon1(X,Y,Z,W)),write('.'),nl)),
+		forall(current_tokemon2(X,Y,Z,W),(write(current_tokemon2(X,Y,Z,W)),write('.'),nl)),
+	told, !.
+
+
+loads(_) :-
+	game_status(1),
 	write('Kamu tidak bisa memulai game lainnya ketika ada game yang sudah dimulai.'), nl, !.
     
 loads(FileName):-
 	\+file_exists(FileName),
 	write('File tersebut tidak ada.'), nl, !.
+
 loads(FileName):-
 	open(FileName, read, Str),
     read_file_lines(Str,Lines),
     close(Str),
     assertaList(Lines), !.
-save(_):-
-	\+game_status(mulai),
-	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
-	write('Gunakan command "start." untuk memulai game.'), nl, !.
-save(FileName):- !. 
-*/
