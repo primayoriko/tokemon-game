@@ -121,7 +121,7 @@ printMap(_,_) :-
 	write('-').   
 
 isLegendary(A,B):-
-    legendary_place(A,B,_).
+    posisiLegendary(_,A,B).
 
 generateLegendary:-
     lebarPeta(X),
@@ -134,7 +134,7 @@ generateLegendary:-
     forall(between(13,17,R), (
         random(XMin,XMax, A),
         random(YMin,YMax, B),
-        assert(legendary_place(A,B,R))
+        assert(posisiLegendary(R,A,B))
         )),
     !.
 
