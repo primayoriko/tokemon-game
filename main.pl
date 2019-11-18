@@ -104,7 +104,7 @@ status :-
 	printLegendaryTokemon(iqbalmon),
 	printLegendaryTokemon(malmon),
 	printLegendaryTokemon(ascalon),
-	printListLegendaryTokemon(tokeqil),
+	printLegendaryTokemon(tokeqil),
 	printLegendaryKosong,
 	!.
 
