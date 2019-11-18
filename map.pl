@@ -8,9 +8,6 @@
 :- include('tokemon.pl').
 :- include('battle.pl').
 
-
-
-
 init_map :-
     random(10,50,X),
     random(10,50,Y),
@@ -157,23 +154,9 @@ posi :-
     write(X), nl,
     write(Y), ! .
 
-    
 n:-
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
-
-
-n :-
-    tangkaptime(J),
-    retract(tangkaptime(J)),asserta(tangkaptime(0)),
-    (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
-    player_position(X,Y),
-    Y > 1,
-	Y2 is Y-1,
-    X2 is X,
-    write([X2,Y2]),nl,
-    retract(player_position(X,Y)),
-	asserta(player_position(X2,Y2)),roll, !.
 
 n :-
     player_position(_,Y),
@@ -181,9 +164,43 @@ n :-
     write('nabrak bray'),nl,
     !.
 
+n:-
+    player_position(X,Y),
+	Y2 is Y-1,
+    X2 is X,
+    isRintangan(X2,Y2),
+    write('gabisa cuy ada rintangan'),!.
+
+n :-
+    tangkaptime(J),
+    retract(tangkaptime(J)),asserta(tangkaptime(0)),
+    (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
+    player_position(X,Y),
+	Y2 is Y-1,
+    X2 is X,
+    write([X2,Y2]),nl,
+    retract(player_position(X,Y)),
+	asserta(player_position(X2,Y2)),roll, !.
+
+
 s :-
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
+
+s :-
+    player_position(_,Y),
+    tinggiPeta(YY),
+    YYY is YY-1,
+    Y > YYY,
+    write('nabrak bray'),nl,
+    !.
+
+s :-
+    player_position(X,Y),
+	Y2 is Y+1,
+    X2 is X,
+    isRintangan(X2,Y2),
+    write('gabisa cuy ada rintangan'),!.
 
 s :-
     tangkaptime(J),
@@ -199,16 +216,6 @@ s :-
 	asserta(player_position(X2,Y2)),
     roll, !.
 
-s :-
-    player_position(_,Y),
-    tinggiPeta(YY),
-    YYY is YY-1,
-    Y > YYY,
-    write('nabrak bray'),nl,
-    !.
-
-
-
 e:-
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
@@ -220,6 +227,13 @@ e :-
     X > XXX,
     write('nabrak bray'),nl,
     !.
+
+e :-
+    player_position(X,Y),
+	Y2 is Y,
+    X2 is X+1,
+    isRintangan(X2,Y2),
+    write('gabisa cuy ada rintangan'),!.
 
 e :-
     tangkaptime(J),
@@ -235,6 +249,9 @@ e :-
 	asserta(player_position(X2,Y2)),
     roll, !.
 
+w :-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
 
 w :-
     player_position(X,_),
@@ -242,9 +259,12 @@ w :-
     write('nabrak bray'),nl,
     !.
 
-w:-
-    (lagi_ketemu(1);battle_status(1)),
-    write('lagi ada pokemon jgn caw dong'),nl, !.
+w :-
+    player_position(X,Y),
+	Y2 is Y,
+    X2 is X-1,
+    isRintangan(X2,Y2),
+    write('gabisa cuy ada rintangan'),!.
 
 w :-
     tangkaptime(J),
