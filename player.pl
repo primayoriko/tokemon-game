@@ -1,31 +1,28 @@
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
-:- dynamic(inventory/7).                
+:- dynamic(inventory/8).                
 :- dynamic(maxInventory/1).             
 :- dynamic(gameMain/1).
 
-/* inventory(nama, current health, nattack, sattack, namasatack, type, id) */
+/* inventory(nama, current health, nattack, sattack, namasatack, type, id, lvl) */
 /* maxInventory(Maks) */
 
 :- include('tokemon.pl').
 :- include('utility.pl').
 
-init_inventory:- 
-
-
-
 check_inv(X):-
-	inventory(X,_,_,_,_,_,_).
+	inventory(X,_,_,_,_,_,_,_).
 
 printInventory :-
-	forall(inventory(A,B,C,D,E,F,G),
+	forall(inventory(A,B,C,D,E,F,G,H),
 	(write(A),nl,
 	write(B),nl,
 	write(C),nl,
 	write(D),nl,
 	write(E),nl,
 	write(F),nl,
-	write(G),nl)),!.
+	write(G),nl,
+	write(H),nl)),!.
 
 init_player :-
 	asserta(gameMain(1)),
@@ -41,19 +38,19 @@ addToInventory(Tokemon) :-
 	retract(maxInventory(X)),
 	asserta(maxInventory(X2)),
     tokemon(Tokemon,H,N,S,NS,T,I),  
-	assertz(inventory(Tokemon,H,N,S,NS,T,I)),!.
+	assertz(inventory(Tokemon,H,N,S,NS,T,I,1)),!.
 
 delFromInventory(Tokemon) :-
-	\+inventory(Tokemon,_,_,_,_,_,_),!,fail.
+	\+inventory(Tokemon,_,_,_,_,_,_,_),!,fail.
 
 delFromInventory(Tokemon) :-
-	inventory(Tokemon,_,_,_,_,_,_),
-	retract(inventory(Tokemon,_,_,_,_,_,_)),
+	inventory(Tokemon,_,_,_,_,_,_,_),
+	retract(inventory(Tokemon,_,_,_,_,_,_,_)),
 	!.
 
 generateTokemon :-
 	random(1,12,X),
-	tokemon(Tokemon,_,_,_,_,_,X),
-	write('adding to inventory'),nl,
+	tokemon(Tokemon,_,_,_,_,_,X,_),
+	write('Adding '),write(Tokemon),write(' to your inventory!'),nl,
 	addToInventory(Tokemon),
 	!.
