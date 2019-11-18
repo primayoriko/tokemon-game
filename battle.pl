@@ -48,8 +48,8 @@ pick(X) :-  pick_time(1),
             write('pilih Tokemon lain!'),nl,!.
 
 pick(X) :-
-        inventory(X,H,A,_,_,_,Z),
-        assert(current_tokemon1(Z,H,_,A)),
+        inventory(X,H,A,_,_,_,Z,L),
+        assert(current_tokemon1(Z,H,L,A)),
         write('Kamu memilih '), write(X),write(' untuk bertempur bersamamu!'),nl,
         generateEnemy(L), tulis_battle.
 
@@ -111,8 +111,8 @@ attack :-
 lose :-
         current_tokemon1(A,B,C,O),
         retract(current_tokemon1(A,B,C,O)),
-        inventory(U,B,O,P,J,I,A),
-        retract(inventory(U,B,O,P,J,I,A)),
+        inventory(U,B,O,P,J,I,A,C),
+        retract(inventory(U,B,O,P,J,I,A,C)),
         write(U),write(' has died, pick another'),nl,
         retract(pick_time(0)),assert(pick_time(1)),
         !.
@@ -121,8 +121,8 @@ win :-
         write('YOU WONNNNNNN!!'),nl, retract(battle_status(1)), assert(battle_status(0)),
         current_tokemon1(A,B,L,P),
         retract(current_tokemon1(A,B,L,P)),
-        inventory(D,E,F,G,H,I,A),
-        retract(inventory(D,E,F,G,H,I,A)), asserta(inventory(D,B,F,G,H,I,A)),
+        inventory(D,E,F,G,H,I,A,L),
+        retract(inventory(D,E,F,G,H,I,A,L)), asserta(inventory(D,B,F,G,H,I,A,L+1)),
         retract(tangkaptime(0)),assert(tangkaptime(1)),
         write('Do you want to capture the pokemon?, walk away if you dont'), nl, !.
 
@@ -131,14 +131,20 @@ capture :-
         write('u need to win a fight'),nl,
         !.
 
+
+
 capture :-
         tangkaptime(1),
         retract(tangkaptime(1)),assert(tangkaptime(0)),
         current_tokemon2(X,P,O,L),
         retract(current_tokemon2(X,P,O,L)),
+        random(1,100,R), R>35,
         tokemon(A,B,C,D,E,F,X),
-        assertz(inventory(A,B,C,D,E,F,X)),
-        write('added' ),write(A),write(' to inventory'),!.
+        assertz(inventory(A,B,C,D,E,F,X,1)),
+        write(A),write(' added'),write(' to your inventory!'),nl,!.
+
+capture :- 
+        write('Gagal mencapture! mohon bersabar, ini ujian.'), nl.
         
 specialattack :- 
             battle_status(0),
