@@ -50,10 +50,10 @@ delFromInventory(Tokemon) :-
 
 drop(X) :- delFromInventory(X),!.
 
-delFromInventory(Tokemon) :-
+delFromInventory(_) :-
     maxInventory(X),
- X =:= 1,
- write('u cannot dump ur only pokemon sir'),nl, !.
+	X =:= 1,
+	write('u cannot dump ur only pokemon sir'),nl, !.
  
 
 delFromInventory(Tokemon) :-

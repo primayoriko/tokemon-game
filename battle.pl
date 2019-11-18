@@ -213,7 +213,7 @@ win :-
         current_tokemon1(A,B,L,P),
         current_tokemon2(AA,BB,CC,DD),
         tokemon(NA,_,_,_,_,_,AA),
-        tokemon(_,HEA,_,_,_,_,A)
+        tokemon(_,HEA,_,_,_,_,A),
         write(NA),write(' has died'), nl,
         LV is L + 1,
         retract(current_tokemon1(A,B,L,P)),
