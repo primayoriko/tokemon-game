@@ -40,7 +40,7 @@ tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,
                  write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
                  write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,!.
 
-pick(X) :- pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
+pick(X) :- pick_time(0), write('Bukan waktunya untuk mengeluarkan tokemon sekarang!!'),nl,!.
 
 pick(X) :-  pick_time(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
@@ -48,7 +48,7 @@ pick(X) :-  pick_time(1),
 
 pick(X) :-
         inventory(X,H,A,_,_,_,Z,L),
-        assert(current_tokemon1(Z,H,L,A)),
+        asserta(current_tokemon1(Z,H,L,A)),
         write('Kamu memilih '), write(X),write(' untuk bertempur bersamamu!'),nl,
         generateEnemy(L), tulis_battle.
 
@@ -56,7 +56,7 @@ generateEnemy(L):-
         random(1,12,R),
         tokemon(Xe,He,Ae,_,_,_,R),
         retractall(current_tokemon2(_,_,_,_)),
-        assert(current_tokemon2(Xe,He,L,Ae)),
+        asserta(current_tokemon2(Xe,He,L,Ae)),
         write('Sekarang kamu menghadapi '), write(Xe),write('! Kalahkan dan semoga berhasil!'),nl,
         retractall(lagi_ketemu(_)), asserta(lagi_ketemu(0)),
         retractall(pick_time(_)), asserta(pick_time(0)),
