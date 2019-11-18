@@ -50,7 +50,7 @@ delFromInventory(Tokemon) :-
 
 generateTokemon :-
 	random(1,12,X),
-	tokemon(Tokemon,_,_,_,_,_,X,_),
+	tokemon(Tokemon,_,_,_,_,_,X),
 	write(Tokemon),write(' added to your inventory!'),nl,
 	addToInventory(Tokemon),
 	!.
