@@ -1,9 +1,10 @@
 :- include('map.pl').
 :- include('player.pl').
 
+:- dynamic(legendmati/1).
 :- dynamic(game_status/1).
-game_status(0).
 
+game_status(0).
 
 start :-
 	game_status(1),
@@ -29,6 +30,7 @@ start :-
 	write('pembuatan serum. Kamu dibantu dengan alat hasil penelitian Prof. Rila bisa menjinakkan tokemon-tokemon tersebut'),nl,
 	write('sekarang bantu Prof. Rila untuk segera mengalahkan tokemon spesial sebelum korban-korban sulit ditolong kembali!'),nl,nl,nl,
 	help,nl,nl,nl,
+	assert(legendmati(0)),
 	legend,nl,nl,nl,
 	retract(game_status(0)),asserta(game_status(1)),
 	write('Selamat bermain! Good luck!'),nl,nl,
@@ -151,6 +153,7 @@ save(_):-
 save(FileName):- 
 	tell(FileName),
 		forall(game_status(X), (write(game_status(X)),write('.'),nl)),
+		forall(legendmati(X), (write(legendmati(X)),write('.'),nl)),
 		
 		forall(tinggiPeta(L), (write(tinggiPeta(L)),write('.'),nl)),
 		forall(lebarPeta(L), (write(lebarPeta(L)),write('.'),nl)),

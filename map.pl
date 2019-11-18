@@ -5,7 +5,6 @@
 :- dynamic(ctrheal/1).
 :- dynamic(posisiLegendary/3).
 
-
 :- include('battle.pl').
 
 
@@ -333,6 +332,13 @@ w :-
     roll, !.
 
 roll :-
+    player_position(X,Y),
+    posisiLegendary(A,X,Y),
+    tokemon(A,_,_,_,_,_,ID),
+    battletest(ID), !.
+
+
+roll :-
     posisiGym(A,B),
     player_position(X,Y),
     X =:= A, Y =:= B,
@@ -341,9 +347,11 @@ roll :-
 
 
 roll :-
+    posisiLegendary(_,XX,YY),
     posisiGym(A,B),
     player_position(X,Y),
     (B =\= Y; A =\= X),
+    (Y =\= YY;X =\= XX),
     random(1,100,C), encounterroll(C),!.
 
 encounterroll(X) :-

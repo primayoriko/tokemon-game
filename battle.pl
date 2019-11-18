@@ -47,7 +47,7 @@ run :-  lagi_ketemu(1),
         
 
 
-tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,LV,_), tokemon(B,_,_,_,_,E,Y), current_tokemon2(Y,F,L,_), 
+tulis_battle :-  current_tokemon1(X,D,LV,_),tokemon(A,_,_,_,_,C,X),  current_tokemon2(Y,F,L,_),  tokemon(B,_,_,_,_,E,Y),
                     write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,write('Level : '),write(LV),nl,nl,
                     write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,write('Level : '),write(L),nl,nl,!.
 
@@ -57,6 +57,8 @@ pick(X) :-  battle_status(1),pick_time(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
             write('pilih Tokemon lain!'),nl,!.
 
+pick(X) :-
+    specials(J), retract(specials(J)).
 
 pick(X) :-
     asserta(specials(1)),
@@ -148,39 +150,32 @@ special :-
             specials(1),
             battle_status(1),
             current_tokemon1(A,B,C,_), current_tokemon2(E,F,G,H),
-            ((tokemon(N,_,_,S,P,grass,A),tokemon(NAMAM,_,_,_,_,water,E));(tokemon(N,_,_,S,P,water,A),tokemon(_,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(_,_,_,_,_,grass,E))),
+            ((tokemon(N,_,_,S,P,grass,A),tokemon(NAMAM,_,_,_,_,water,E));(tokemon(N,_,_,S,P,water,A),tokemon(NAMAM,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(NAMAM,_,_,_,_,grass,E))),
             write(N),write(' used '),write(P),write('!'), nl,
             S2 is S*(1+(C/5)),
             B2 is B - H, F2 is (F-(S2*1.5)), 
             write('ITS SUPER EFFECTIVE'),nl,nl,
             S3 is S2*1.5,
             write(NAMAM),write(' took '),write(S3),write(' damage'),nl,
-            ((B2 >0, F2 > 0) ->
-            (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
-            ((B2 > 0 , F2 =< 0) ->  win;(
-                    (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            ))),
-            retract(specials(_)),asserta(specials(0))
+            ((F2 > 0) ->
+            (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;win),
+            retract(specials(1)),asserta(specials(0))
             ,!.
 
 special :-
         specials(1),
-        
             battle_status(1),
             current_tokemon1(A,B,C,_), current_tokemon2(E,F,G,H),
-            ((tokemon(N,_,_,S,P,water,A),tokemon(NAMAM,_,_,_,_,grass,E));(tokemon(N,_,_,S,P,grass,A),tokemon(_,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(_,_,_,_,_,water,E))),
+            ((tokemon(N,_,_,S,P,water,A),tokemon(NAMAM,_,_,_,_,grass,E));(tokemon(N,_,_,S,P,grass,A),tokemon(NAMAM,_,_,_,_,fire,E));(tokemon(N,_,_,S,P,fire,A),tokemon(NAMAM,_,_,_,_,water,E))),
             write(N),write(' used '),write(P),write('!'), nl,
             S2 is S*(1+(C/5)),
             B2 is B - H, F2 is (F-(S2*0.5)), 
             S3 is S2*0.5,
             write('ITS NOT VERY EFFECTIVE.....'),nl,nl,
             write(NAMAM),write(' took '),write(S3),write(' damage'),nl,
-            ((B2 >0, F2 > 0) ->
-            (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
-            ((B2 > 0 , F2 =< 0) ->  win;(
-                    (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            ))),
-            retract(specials(_)),asserta(specials(0))
+            ((F2 > 0) ->
+            (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;win),
+            retract(specials(1)),asserta(specials(0))
             ,!.
 
 special :- 
@@ -193,13 +188,9 @@ special :-
             B2 is B-H, F2 is ((F-S2)), 
             write('ITS NORMALLY EFFECTIVE'),nl,nl,
             write(NAMAM),write(' took '),write(S2),write(' damage'),nl,
-            ((B2 >0, F2 > 0) ->
-            (retract(current_tokemon2(E,F,G,H)),
-            asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;(
-            ((F2 =< 0) ->  win;(
-                    (B2 =< 0, F2 > 0) -> (lose,nl) ;seri)
-            ))),
-            retract(specials(_)),asserta(specials(0))
+           ((F2 > 0) ->
+            (retract(current_tokemon2(E,F,G,H)),asserta(current_tokemon2(E,F2,G,H)),attackenemy,tulis_battle) ;win),
+            retract(specials(1)),asserta(specials(0))
             ,!.
 
 
@@ -241,16 +232,37 @@ win :-
         current_tokemon2(AA,_,_,_),
         tokemon(NA,_,_,_,_,_,AA),
         tokemon(_,HEA,_,_,_,_,A),
-        specials(X),
-        retract(specials(X)),
         write(NA),write(' has died'), nl,
         LV is L + 1,
+        (AA >12 -> winlegend;write('')),
         retract(current_tokemon1(A,B,L,P)),
         inventory(D,E,F,G,H,I,A,L),
-        B2 is B+((L/5)*HEA),
+        B2 is B+((L/10)*HEA),
         retract(inventory(D,E,F,G,H,I,A,L)), asserta(inventory(D,B2,F,G,H,I,A,LV)),
         retract(tangkaptime(0)),assert(tangkaptime(1)),
         write('Do you want to capture the pokemon?, walk away if you dont'), nl, !.
+
+
+winlegend :-
+        legendmati(X),
+        X =< 3,
+        current_tokemon2(AA,_,_,_),
+        tokemon(N,_,_,_,_,_,AA),
+        write('u have beaten the legendary '),write(N),write(' !!!'),nl,
+        X2 is X+1,
+        retract(legendmati(X)),assert(legendmati(X2)),
+        retract(posisiLegendary(N,_,_)),cekwin,
+        !.
+        
+cekwin :-
+        legendmati(X),
+        X <4,
+        write(''),!.
+
+cekwin :-
+        legendmati(X),
+        X =:= 4,nl,nl,
+        write('kamu menang!!!!!!!!'),nl,nl,quit,!.
 
 capture :-
         tangkaptime(0),
