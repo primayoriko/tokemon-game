@@ -49,11 +49,24 @@ pick(X) :-  battle_status(1), pick_time(1),
 pick(X) :-
         inventory(X,H,A,_,_,_,Z),
         assert(current_tokemon1(Z,H,_,A)),
+        write('Kamu memilih '), write(X),write(' untuk bertempur bersamamu!'),nl,
+        generateEnemy(L), tulis_battle.
+
+generateEnemy(L):-
         random(1,12,R),
         tokemon(Xe,He,Ae,_,_,_,R),
-        current_tokemon2(X,)
+        assert(current_tokemon2(Xe,He,L,Ae)),
+        write('Sekarang kamu menghadapi '), write(Xe),write('! Kalahkan dan semoga berhasil!'),nl,
+        retractall(lagi_ketemu(_)), asserta(lagi_ketemu(0)),
+        retractall(battle_status(_)), asserta(battle_status(1)),
 
-
+/*pick(X) :-
+    battle_status(1),
+    pick_time(1),
+    inventory(X,B,C,D,E,F,G),
+    asserta(current_tokemon1(G,B,1,C)),
+    retract(pick_time(1)), assert(pick_time(0)),
+    tulis_battle.*/
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
@@ -167,3 +180,9 @@ specialattack :-
             assert(current_tokemon1(X,E2,_)), assert(current_tokemon2(Y,F2,_)),
             calc_health,
             !.
+
+battle:- 
+    retract(lagi_ketemu(0)),
+    asserta(lagi_ketemu(1)),
+    write('anda bertemu tokemon liar dan ganas!'),
+    write('fight or run?'),nl,!.

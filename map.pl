@@ -295,21 +295,4 @@ roll :-
 
 encounterroll(X) :-
     X > 20 -> write('moved');
-    (X < 21) -> battle(X).
-
-
-battle(X) :- 
-    retract(lagi_ketemu(0)),
-    asserta(lagi_ketemu(1)),
-    tokemon(A,B,C,D,E,F,X),
-    write('anda bertemu tokemon liar dan ganas!'),
-    write('fight or run?'),nl,!.
-
-pick(X) :-
-    battle_status(1),
-    pick_time(1),
-    inventory(X,B,C,D,E,F,G),
-    write('anda memilih '), write(X),nl,
-    asserta(current_tokemon1(G,B,1,C)),
-    retract(pick_time(1)), assert(pick_time(0)),
-    tulis_battle.
+    (X < 21) -> battle.
