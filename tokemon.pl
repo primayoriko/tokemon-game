@@ -34,3 +34,5 @@ tokemon(iqbalmon,320,35,150,destroy,grass,15).
 tokemon(malmon,200,30,200,bronze_medal_slash,water,16).
 
 tokemon(ascalon,5500,100,700,null_void,fire,17).
+
+tokemon(aqilmon,460,50,170,kiamat,fire,18).

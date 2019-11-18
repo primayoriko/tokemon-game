@@ -3,8 +3,16 @@
 :- dynamic(posisiGym/2).
 :- dynamic(rintangan/2).
 :- dynamic(ctrheal/1).
+:- dynamic(posisiLegendary/3).
+
 
 :- include('battle.pl').
+/*UNTUK DEBUG*/
+posisiLegendary(inkmon,10,10).
+posisiLegendary(yorikomon,20,20).
+posisiLegendary(iqbalmon,11,11).
+posisiLegendary(malmon,21,21).
+posisiLegendary(ascalon,22,22).
 
 init_map :-
     random(10,20,X),
@@ -14,9 +22,9 @@ init_map :-
     asserta(ctrheal(0)),
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
-    asserta(posisiGym(XGym,YGym)),
     asserta(player_position(1,1)),
     generateRintangan,
+    generateGym,
     !.
     
 isTopBorder(_,Y) :- 
@@ -131,8 +139,22 @@ generateRintangan :-
         asserta(rintangan(A,B))
         )),
     !.
+generateGym :-
+    lebarPeta(X),
+    tinggiPeta(Y),
+    XMin is 2,
+    XMax is X,
+    YMin is 2,
+    YMax is Y,
+    Sum is round(X*Y/100),
 
-printTheWholeMap :-
+    forall(between(1,Sum,_),(
+        random(XMin,XMax,A),
+        random(YMin,YMax,B),
+        asserta(posisiGym(A,B))
+    )),
+    !.
+map :-
     lebarPeta(X),
     tinggiPeta(Y),
     XXX is X+1,

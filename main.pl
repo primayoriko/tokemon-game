@@ -1,4 +1,5 @@
-:- include('move.pl').
+:- include('map.pl').
+:- include('player.pl').
 
 :- dynamic(game_status/1).
 game_status(0).
@@ -12,17 +13,19 @@ start :-
 	!.
 
 start :-
-	/*write(' ╔════╗╔═══╗╔╗╔═╗╔═══╗╔═╗╔═╗╔═══╗╔═╗─╔╗'),nl,
+	nl,
+	write(' 	╔════╗╔═══╗╔╗╔═╗╔═══╗╔═╗╔═╗╔═══╗╔═╗─╔╗'),nl,
 	write('	║╔╗╔╗║║╔═╗║║║║╔╝║╔══╝║║╚╝║║║╔═╗║║║╚╗║║'),nl,
 	write('	╚╝║║╚╝║║─║║║╚╝╝─║╚══╗║╔╗╔╗║║║─║║║╔╗╚╝║'),nl,
 	write('	──║║──║║─║║║╔╗║─║╔══╝║║║║║║║║─║║║║╚╗║║'),nl,
 	write('	──║║──║╚═╝║║║║╚╗║╚══╗║║║║║║║╚═╝║║║─║║║'),nl,
-	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,*/
+	write('	──╚╝──╚═══╝╚╝╚═╝╚═══╝╚╝╚╝╚╝╚═══╝╚╝─╚═╝ '),nl,
 	help,nl,nl,
 	legend,nl,nl,
 	write('Halo! <story>.'),nl,
 	write('Selamat bermain! Good luck!'),nl,nl,
 	init_map,
+	init_player,
 	asserta(game_status(1)),
 	!.
 
@@ -58,7 +61,7 @@ map :-
 	\+game_status(1),
 	write('Command ini hanya bisa dipakai setelah game dimulai.'), nl,
 	write('Gunakan command "start." untuk memulai game.'), nl, !.
-map :- !.
+
 
 	
 status :-
@@ -70,27 +73,71 @@ status :-
 status :- 
 	write('Stat/Inventori:         '), nl,
 	write('Kapasitas inventori:    '), write('6 slot'),nl,
-	write('Sisa inventori:         '), nl,
-	write('Jumlah Koleksi Tokemon: '), nl,
+	maxInventory(X),
+	Y is 6-X,
+	write('Sisa inventori:         '), write(Y), write(' slot'),nl,
+	write('Jumlah Koleksi Tokemon: '), write(X), write(' tokemon'),nl,
 	write('Koleksi:                '), nl,
-		  /*tokemon(_,_,_)->( # fact tokemon(nama, health, tipe)
-			write('Tokemon Anda:')
-			forall(tokemon(Nama,Health,Tipe),
-			(
-				(write(Nama),nl);
-				(write(Health),nl);
-				(write(Tipe),nl);
-			),nl,nl
-			));!,*/
-        write('Blacklist Legendary Tokemon:    '),
-		  /*legendaryTokemon(_,_,_)->( # fact legendaryTokemon(nama, health, tipe)
-		  	forall(legendaryTokemon(Nama,Health,Tipe),
-		  	(
-		  		(write(Nama),nl);
-		  		(write(Health),nl);
-		  		(write(Tipe),nl);
-		  	),nl,nl
-		  	))*/!.
+	printInventory,
+	writeln('List Legendary Tokemon liar:    '),
+	printLegendaryTokemon(inkmon),
+	printLegendaryTokemon(yorikomon),
+	printLegendaryTokemon(iqbalmon),
+	printLegendaryTokemon(malmon),
+	printLegendaryTokemon(ascalon),
+	printLegendaryKosong,
+	!.
+
+
+% printListLegendaryTokemon:-
+% 	forall(tokemon(Tokemon,A,B,C,D,E,X),
+% 	forall(X > 12,forall(posisiLegendary(Tokemon,XX,YY),forall(\+inventory(Tokemon,_,_,_,_,_,_,_),(
+% 			write('Tokemon: '), writeln(Tokemon),
+% 			write('   Health: '),writeln(A),
+% 			write('   Normal attack: '),writeln(B),
+% 			write('   Special attack: '),writeln(C),
+% 			write('   Nama special attack: '),writeln(D),
+% 			write('   Type: '),writeln(E),
+% 			write('   ID: '),writeln(X),
+% 			write('   Posisi: '),write(XX),write(','),write(YY),nl)
+% 		))
+% 	)),!.
+printLegendaryKosong :-
+	findall(Tokemon,(tokemon(Tokemon,_,_,_,_,_,X),
+	X > 12,inventory(Tokemon,_,_,_,_,_,_,_)),ListLegendary),
+    length(ListLegendary, Panjang),
+	Panjang =\= 6,
+	!.
+
+printLegendaryKosong :-
+	findall(Tokemon,(tokemon(Tokemon,_,_,_,_,_,X),
+	X > 12,inventory(Tokemon,_,_,_,_,_,_,_)),ListLegendary),
+    length(ListLegendary, Panjang),
+	Panjang =:= 5,
+	writeln('Tidak ada legendary tokemon liar'),
+	!.
+
+
+printLegendaryTokemon(Tokemon):-
+	tokemon(Tokemon,_,_,_,_,_,X),
+	X > 12,
+	inventory(Tokemon,_,_,_,_,_,_,_),
+	!.
+printLegendaryTokemon(Tokemon):-
+	tokemon(Tokemon,A,B,C,D,E,X),
+	X > 12,
+	\+inventory(Tokemon,_,_,_,_,_,_,_),
+	posisiLegendary(Tokemon,XX,YY),
+	write('Tokemon: '), writeln(Tokemon),
+	write('   Health: '),writeln(A),
+	write('   Normal attack: '),writeln(B),
+	write('   Special attack: '),writeln(C),
+	write('   Nama special attack: '),writeln(D),
+	write('   Type: '),writeln(E),
+	write('   ID: '),writeln(X),
+	write('   Posisi: '),write(XX),write(','),write(YY),nl,
+	!.
+
 	
 /*loads(_) :-
 	game_status(mulai),

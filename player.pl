@@ -13,17 +13,21 @@
 check_inv(X):-
 	inventory(X,_,_,_,_,_,_,_).
 
+cekPanjangInv(Panjang) :-
+	findall(B,inventory(B,_),ListBanyak),
+	length(ListBanyak,Panjang).
+
 printInventory :-
 	forall(inventory(A,B,C,D,E,F,G,H),
-	(write(A),nl,
-	write(B),nl,
-	write(C),nl,
-	write(D),nl,
-	write(E),nl,
-	write(F),nl,
-	write(G),nl,
-	write(H),nl)),!.
-
+	(write('Tokemon: '),write(A),nl,
+	 write('   Health: '),write(B),nl,
+	 write('   Normal attack: '),write(C),nl,
+	 write('   Special attack: '),write(D),nl,
+	 write('   Nama Special attack: '),write(E),nl,
+	 write('   Type: '),write(F),nl,
+	 write('   ID: '),write(G),nl,
+	 write('   Level: '),write(H),nl,nl)),!.
+	
 init_player :-
 	asserta(gameMain(1)),
 	asserta(maxInventory(0)),
@@ -40,10 +44,10 @@ addToInventory(Tokemon) :-
     tokemon(Tokemon,H,N,S,NS,T,I),  
 	assertz(inventory(Tokemon,H,N,S,NS,T,I,1)),!.
 
-delFromInventory(Tokemon) :-
+drop(Tokemon) :-
 	\+inventory(Tokemon,_,_,_,_,_,_,_),!,fail.
 
-delFromInventory(Tokemon) :-
+drop(Tokemon) :-
 	inventory(Tokemon,_,_,_,_,_,_,_),
 	retract(inventory(Tokemon,_,_,_,_,_,_,_)),
 	!.
