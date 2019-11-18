@@ -113,7 +113,7 @@ lose :-
         retract(current_tokemon1(A,B,C,O)),
         inventory(U,B,O,P,J,I,A,C),
         retract(inventory(U,B,O,P,J,I,A,C)),
-        write(U),write(' has died, pick another'),nl,
+        write(U),write(' has died, pick another tokemon please!'),nl,
         retract(pick_time(0)),assert(pick_time(1)),
         !.
 
@@ -121,17 +121,15 @@ win :-
         write('YOU WONNNNNNN!!'),nl, retract(battle_status(1)), assert(battle_status(0)),
         current_tokemon1(A,B,L,P),
         retract(current_tokemon1(A,B,L,P)),
-        inventory(D,E,F,G,H,I,A,L),
-        retract(inventory(D,E,F,G,H,I,A,L)), asserta(inventory(D,B,F,G,H,I,A,L+1)),
+        inventory(D,E,F,G,H,I,A,L),retract(inventory(D,E,F,G,H,I,A,L)), 
+        (L=:=30 -> LN is 30 ; LN is L+1), asserta(inventory(D,B,F,G,H,I,A,LN)),
         retract(tangkaptime(0)),assert(tangkaptime(1)),
         write('Do you want to capture the pokemon?, walk away if you dont'), nl, !.
 
 capture :-
         \+tangkaptime(1),
-        write('u need to win a fight'),nl,
+        write('u need to win a fight!!!!!'),nl,
         !.
-
-
 
 capture :-
         tangkaptime(1),
