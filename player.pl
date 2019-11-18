@@ -27,7 +27,7 @@ printInventory :-
 	 write('   Type: '),write(F),nl,
 	 write('   ID: '),write(G),nl,
 	 write('   Level: '),write(H),nl,nl)),!.
-	
+
 init_player :-
 	asserta(gameMain(1)),
 	asserta(maxInventory(0)),
@@ -44,13 +44,26 @@ addToInventory(Tokemon) :-
     tokemon(Tokemon,H,N,S,NS,T,I),  
 	assertz(inventory(Tokemon,H,N,S,NS,T,I,1)),!.
 
-drop(Tokemon) :-
-	\+inventory(Tokemon,_,_,_,_,_,_,_),!,fail.
+delFromInventory(Tokemon) :-
+ \+inventory(Tokemon,_,_,_,_,_,_,_),
+ write('u have no such tokemon dude'),nl,!,fail.
 
-drop(Tokemon) :-
-	inventory(Tokemon,_,_,_,_,_,_,_),
-	retract(inventory(Tokemon,_,_,_,_,_,_,_)),
-	!.
+drop(X) :- delFromInventory(X),!.
+
+delFromInventory(Tokemon) :-
+    maxInventory(X),
+ X =:= 1,
+ write('u cannot dump ur only pokemon sir'),nl, !.
+ 
+
+delFromInventory(Tokemon) :-
+    maxInventory(X),
+ X2 is X-1,
+ retract(maxInventory(X)),
+ asserta(maxInventory(X2)),
+ inventory(Tokemon,_,_,_,_,_,_,_),
+ retract(inventory(Tokemon,_,_,_,_,_,_,_)),
+ !.
 
 generateTokemon :-
 	random(1,12,X),
