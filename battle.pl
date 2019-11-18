@@ -1,6 +1,5 @@
 :- dynamic(udah_lari/1).
 :- dynamic(lagi_ketemu/1).
-:- dynamic(lagi_pick/1).
 :- dynamic(battle_status/1).
 :- dynamic(tangkaptime/1).
 :- dynamic(pick_time/1).
@@ -40,9 +39,9 @@ tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,
                     write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
                     write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,!.
 
-pick(X) :- battle_status(0),pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
+pick(X) :- pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
 
-pick(X) :-  battle_status(1), pick_time(1),
+pick(X) :-  pick_time(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
             write('pilih Tokemon lain!'),nl,!.
 
@@ -55,18 +54,12 @@ pick(X) :-
 generateEnemy(L):-
         random(1,12,R),
         tokemon(Xe,He,Ae,_,_,_,R),
+        retractall(current_tokemon2(_,_,_,_)),
         assert(current_tokemon2(Xe,He,L,Ae)),
         write('Sekarang kamu menghadapi '), write(Xe),write('! Kalahkan dan semoga berhasil!'),nl,
         retractall(lagi_ketemu(_)), asserta(lagi_ketemu(0)),
-        retractall(battle_status(_)), asserta(battle_status(1)),
-
-/*pick(X) :-
-    battle_status(1),
-    pick_time(1),
-    inventory(X,B,C,D,E,F,G),
-    asserta(current_tokemon1(G,B,1,C)),
-    retract(pick_time(1)), assert(pick_time(0)),
-    tulis_battle.*/
+        retractall(pick_time(_)), asserta(pick_time(0)),
+        retractall(battle_status(_)), asserta(battle_status(1)).
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
@@ -182,7 +175,7 @@ specialattack :-
             !.
 
 battle:- 
-    retract(lagi_ketemu(0)),
-    asserta(lagi_ketemu(1)),
+    retractall(lagi_ketemu(_)), asserta(lagi_ketemu(1)),
+    retractall(pick_time(_)), asserta(pick_time(1)),
     write('anda bertemu tokemon liar dan ganas!'),
     write('fight or run?'),nl,!.
