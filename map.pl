@@ -8,11 +8,6 @@
 
 :- include('battle.pl').
 /*UNTUK DEBUG*/
-posisiLegendary(inkmon,10,10).
-posisiLegendary(yorikomon,20,20).
-posisiLegendary(iqbalmon,11,11).
-posisiLegendary(malmon,21,21).
-posisiLegendary(ascalon,22,22).
 
 init_map :-
     random(10,20,X),
@@ -21,6 +16,7 @@ init_map :-
     asserta(lebarPeta(X)),
     asserta(tinggiPeta(Y)),
     asserta(player_position(1,1)),
+    generateLegendary,
     generateGym,
     generateRintangan,
     !.
@@ -108,6 +104,8 @@ heal :-
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
 printMap(X,Y) :-
+    legendary_place(X,Y,_), !, write('L').
+printMap(X,Y) :-
     isGym(X,Y), !, write('G').
 printMap(X,Y) :-
     isRightBorder(X,Y), !, write('X').
@@ -122,6 +120,42 @@ printMap(X,Y) :-
 printMap(_,_) :-
 	write('-').   
 
+isLegendary(A,B):-
+    legendary_place(A,B,_).
+
+generateLegendary:-
+    lebarPeta(X),
+    tinggiPeta(Y),
+    XMin is 2,
+	XMax is X,
+	YMin is 2,
+    YMax is Y,
+
+    forall(between(13,17,R), (
+        random(XMin,XMax, A),
+        random(YMin,YMax, B),
+        assert(legendary_place(A,B,R))
+        )),
+    !.
+
+generateGym:-
+    lebarPeta(X),
+    tinggiPeta(Y),
+    XMin is 2,
+	XMax is X,
+	YMin is 2,
+    YMax is Y,
+    Sum is round(X*Y/100),
+        
+    forall(between(1,Sum,_), (
+        random(XMin,XMax, A),
+        random(YMin,YMax, B),
+        not(isLegendary(A,B)),
+        asserta(posisiGym(A,B))
+        )),
+    !.
+
+
 generateRintangan :-
     lebarPeta(X),
     tinggiPeta(Y),
@@ -134,24 +168,12 @@ generateRintangan :-
     forall(between(1,Sum,_), (
         random(XMin,XMax, A),
         random(YMin,YMax, B),
+        not(isLegendary(A,B)),
+        not(posisiGym(A,B)),
         asserta(rintangan(A,B))
         )),
     !.
-generateGym :-
-    lebarPeta(X),
-    tinggiPeta(Y),
-    XMin is 2,
-    XMax is X,
-    YMin is 2,
-    YMax is Y,
-    Sum is round(X*Y/100),
 
-    forall(between(1,Sum,_),(
-        random(XMin,XMax,A),
-        random(YMin,YMax,B),
-        asserta(posisiGym(A,B))
-    )),
-    !.
 map :-
     lebarPeta(X),
     tinggiPeta(Y),

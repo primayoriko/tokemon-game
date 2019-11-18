@@ -44,11 +44,7 @@ quit :-
 	(udahheal(_)->retractall(udahheal(_))),assert(udahheal(0)),retract(tangkaptime(_)),assert(tangkaptime(0)),
 	retract(pick_time(_)),assert(pick_time(0)),
 	(lebarPeta(_)->retract(lebarPeta(_))),(tinggiPeta(_)->retract(tinggiPeta(_))),(posisiGym(_,_)->retractall(posisiGym(_,_))),(rintangan(_,_)->retractall(rintangan(_,_))),(ctrheal(_)->retractall(ctrheal(_))),
-	/*(posisiLegendary(_,_,_)->retractall(posisiLegendary(_,_,_))),*/
-	/*(udah_lari(_) -> retract(udah_lari(_))), (lagi_ketemu(_) -> retract(lagi_ketemu(_))),(battle_status(_) -> retract(battle_status(_))),
-	(digym(_)->retract(digym(_))),(maucapture(_)->retractall(maucapture(_))),(lagi_pick(_)->retractall(lagi_pick(_))),(finish_battle(_)->retractall(finish_battle(_))),
-	(current_tokemon1(_,_,_,_)-> retract(current_tokemon1(_,_,_,_))),(current_tokemon2(_,_,_,_) -> retract(current_tokemon2(_,_,_,_))),
-	(player_status(_)->retract(player_status(_))),*/ (player_position(_,_)->retract(player_position(_,_))),(inventory(_,_,_,_,_,_,_,_)->retractall(inventory(_,_,_,_,_,_,_,_))),(maxInventory(_)->retract(maxInventory(_))),(gameMain(_)->retractall(gameMain(_))),
+	(player_position(_,_)->retract(player_position(_,_))),(inventory(_,_,_,_,_,_,_,_)->retractall(inventory(_,_,_,_,_,_,_,_))),(maxInventory(_)->retract(maxInventory(_))),(gameMain(_)->retractall(gameMain(_))),
 	write('Terima Kasih telah bermain!'),nl,
 	write('Sampai jumpa lagi!'),nl,!.
 
@@ -112,20 +108,6 @@ status :-
 	printLegendaryKosong,
 	!.
 
-
-% printListLegendaryTokemon:-
-% 	forall(tokemon(Tokemon,A,B,C,D,E,X),
-% 	forall(X > 12,forall(posisiLegendary(Tokemon,XX,YY),forall(\+inventory(Tokemon,_,_,_,_,_,_,_),(
-% 			write('Tokemon: '), writeln(Tokemon),
-% 			write('   Health: '),writeln(A),
-% 			write('   Normal attack: '),writeln(B),
-% 			write('   Special attack: '),writeln(C),
-% 			write('   Nama special attack: '),writeln(D),
-% 			write('   Type: '),writeln(E),
-% 			write('   ID: '),writeln(X),
-% 			write('   Posisi: '),write(XX),write(','),write(YY),nl)
-% 		))
-% 	)),!.
 printLegendaryKosong :-
 	findall(Tokemon,(tokemon(Tokemon,_,_,_,_,_,X),
 	X > 12,inventory(Tokemon,_,_,_,_,_,_,_)),ListLegendary),
@@ -218,17 +200,29 @@ read_file(Stream, Lines) :-
     ( at_end_of_stream(Stream) -> Lines = [] ;  Lines = [Line|NewLines],       
        read_file(Stream, NewLines)).
 
-/*loads(_) :-
-	game_status(1),
-	write('Kamu tidak bisa memulai game lainnya ketika ada game yang sudah dimulai.'), nl, !.
-    
-loads(FileName):-
-	\+file_exists(FileName),
-	write('File tersebut tidak ada.'), nl, !.
-
-loads(FileName):-
-	open(FileName, read, Str),
-    read_file_lines(Str,Lines),
-    close(Str),
-    assertaList(Lines), !.
+/*source:
+	load file : https://stackoverflow.com/questions/37573618/how-to-read-a-file-in-prolog/37574687#37574687
 */
+
+
+/* Dump File : */
+
+/*(posisiLegendary(_,_,_)->retractall(posisiLegendary(_,_,_))),*/
+	/*(udah_lari(_) -> retract(udah_lari(_))), (lagi_ketemu(_) -> retract(lagi_ketemu(_))),(battle_status(_) -> retract(battle_status(_))),
+	(digym(_)->retract(digym(_))),(maucapture(_)->retractall(maucapture(_))),(lagi_pick(_)->retractall(lagi_pick(_))),(finish_battle(_)->retractall(finish_battle(_))),
+	(current_tokemon1(_,_,_,_)-> retract(current_tokemon1(_,_,_,_))),(current_tokemon2(_,_,_,_) -> retract(current_tokemon2(_,_,_,_))),
+	(player_status(_)->retract(player_status(_))),*/
+
+% printListLegendaryTokemon:-
+% 	forall(tokemon(Tokemon,A,B,C,D,E,X),
+% 	forall(X > 12,forall(posisiLegendary(Tokemon,XX,YY),forall(\+inventory(Tokemon,_,_,_,_,_,_,_),(
+% 			write('Tokemon: '), writeln(Tokemon),
+% 			write('   Health: '),writeln(A),
+% 			write('   Normal attack: '),writeln(B),
+% 			write('   Special attack: '),writeln(C),
+% 			write('   Nama special attack: '),writeln(D),
+% 			write('   Type: '),writeln(E),
+% 			write('   ID: '),writeln(X),
+% 			write('   Posisi: '),write(XX),write(','),write(YY),nl)
+% 		))
+% 	)),!.

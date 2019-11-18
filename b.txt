@@ -1,5 +1,4 @@
 game_status(1).
-game_status(0).
 tinggiPeta(13).
 lebarPeta(10).
 ctrheal(0).
@@ -36,8 +35,6 @@ digym(0).
 udahheal(0).
 udahheal(0).
 lagi_ketemu(0).
-lagi_ketemu(0).
-battle_status(0).
 battle_status(0).
 finish_battle(0).
 finish_battle(0).
