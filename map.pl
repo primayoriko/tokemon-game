@@ -62,17 +62,17 @@ goToGym :-
     retract(player_position(X,Y)),
 	asserta(player_position(X2,Y2)), !.
 
-setHealthTo0 :- 
-    Y is 0,
-    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
-    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+setHealthTo0 :-
+    /* BUAT DEBUGGGGGG DOANGGGGG */
+    forall(retract(inventory(Tokemon,_,N,S,NS,T,I)),asserta(inventory(Tokemon,0,N,S,NS,T,I))).
 
-setHealthToFull :- 
-    inventory(Tokemon,Health,N,S,NS,T,I),
-    tokemon(Tokemon,Health1,_,_,_,_,_),
-    Y is Health1,
-    retract(inventory(Tokemon,Health,N,S,NS,T,I)),
-    asserta(inventory(Tokemon,Y,N,S,NS,T,I)). 
+setHealthToFull :-
+    /* Prosedur untuk mengheal semua tokemon */
+    forall(inventory(Tokemon,Health,N,S,NS,T,I),
+    forall(tokemon(Tokemon,Health1,_,_,_,_,_),
+    forall(Y is Health1,
+    forall(retract(inventory(Tokemon,Health,N,S,NS,T,I)),
+    asserta(inventory(Tokemon,Y,N,S,NS,T,I)))))).
 
 heal :-
     /* Pemain belum pernah melakukan heal dan berada di posisi Gym*/
