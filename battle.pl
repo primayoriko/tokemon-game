@@ -5,7 +5,6 @@
 :- dynamic(lagi_ketemu/1).
 :- dynamic(lagi_pick/1).
 :- dynamic(battle_status/1).
-:- dynamic(finish_battle/1).
 :- dynamic(tangkaptime/1).
 
 :- include('player.pl').
@@ -18,7 +17,6 @@
 digym(0).
 udahheal(0).
 tangkaptime(0).
-finish_battle(0).
 
 fight :- lagi_ketemu(1), retract(lagi_ketemu(1)), assert(lagi_ketemu(0)),
          retract(battle_status(0)), asserta(battle_status(1)),
@@ -51,9 +49,6 @@ pick(X) :-  battle_status(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
             write('pilih Tokemon lain!'),nl,!.
 
-
-
-
 see_result(X, Y) :-
             /* melihat outcome dari battle */
             X=\=0, Y=\=0, !.
@@ -63,7 +58,7 @@ see_result(X, Y) :-
             Y =:= 0, 
             write('Selamat anda berhasil mengalahkan tokemon!'), nl,
             write('Ingin mencoba untuk mencapture??'), nl,
-            retractall(finish_battle(0), finish_battle(1)),
+            retractall(tangkaptime(_)), assert(tangkaptime(1)),
             !.
 
 see_result(X, Y) :-
