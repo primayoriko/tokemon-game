@@ -7,8 +7,8 @@
 :- include('battle.pl').
 
 init_map :-
-    random(10,50,X),
-    random(10,50,Y),
+    random(10,20,X),
+    random(10,20,Y),
     random(1,X,XGym),
     random(1,Y,YGym),
     asserta(ctrheal(0)),
@@ -99,8 +99,6 @@ heal :-
     nl,
     !.
 
-
-% PRINT KEBERJALANAN PROGRAM BELUM YAAAA
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
 printMap(X,Y) :-
@@ -116,8 +114,7 @@ printMap(X,Y) :-
 printMap(X,Y) :-
     rintangan(X,Y), !, write('X').
 printMap(_,_) :-
-	write('-').
-    
+	write('-').   
 
 generateRintangan :-
     lebarPeta(X),
@@ -138,8 +135,8 @@ generateRintangan :-
 printTheWholeMap :-
     lebarPeta(X),
     tinggiPeta(Y),
-    XXX is X +1,
-    YYY is Y +1,
+    XXX is X+1,
+    YYY is Y+1,
     forall(between(0,YYY,YY),
         (forall(between(0,XXX,XX),
             printMap(XX,YY)
@@ -289,10 +286,7 @@ roll :-
     posisiGym(A,B),
     player_position(X,Y),
     (B =\= Y; A =\= X),
-    random(1,100,C),
-    encounterroll(C),!.
-
+    random(1,100,C), encounterroll(C),!.
 
 encounterroll(X) :-
-    X > 20 -> write('moved');
-    (X < 21) -> battle.
+    X > 20 -> write('You have moved');battle.

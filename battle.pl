@@ -56,11 +56,10 @@ generateEnemy(L):-
         random(1,12,R),
         tokemon(Xe,He,Ae,_,_,_,R),
         retractall(current_tokemon2(_,_,_,_)),
-        asserta(current_tokemon2(Xe,He,L,Ae)),
+        asserta(current_tokemon2(R,He,L,Ae)),
         write('Sekarang kamu menghadapi '), write(Xe),write('! Kalahkan dan semoga berhasil!'),nl,
-        retractall(lagi_ketemu(_)), asserta(lagi_ketemu(0)),
-        retractall(pick_time(_)), asserta(pick_time(0)),
-        retractall(battle_status(_)), asserta(battle_status(1)).
+        retract(pick_time(1)), asserta(pick_time(0)),
+        retract(battle_status(0)), asserta(battle_status(1)).
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
