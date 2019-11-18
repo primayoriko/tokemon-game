@@ -1,9 +1,12 @@
 :- dynamic(player_status/1).
 :- dynamic(player_position/2).
-:- dynamic(inventory/7).                /* inventory(nama,max health, nattack,sattack,namasatack,type,id) */
-:- dynamic(maxInventory/1).             /* maxInventory(Maks) */
+:- dynamic(inventory/7).                
+:- dynamic(maxInventory/1).             
 :- dynamic(gameMain/1).
 :- dynamic(jumlapokemon/1).
+
+/* inventory(nama, current health, nattack, sattack, namasatack, type, id) */
+/* maxInventory(Maks) */
 
 :- include('tokemon.pl').
 :- include('utility.pl').
@@ -11,8 +14,6 @@
 
 check_inv(X):-
 	inventory(X,_,_,_,_,_,_).
-
-
 
 printInventory :-
 	forall(inventory(A,B,C,D,E,F,G),
@@ -40,10 +41,8 @@ addToInventory(Tokemon) :-
     tokemon(Tokemon,H,N,S,NS,T,I),  
 	assertz(inventory(Tokemon,H,N,S,NS,T,I)),!.
 
-
 delFromInventory(Tokemon) :-
 	\+inventory(Tokemon,_,_,_,_,_,_),!,fail.
-
 
 delFromInventory(Tokemon) :-
 	inventory(Tokemon,_,_,_,_,_,_),

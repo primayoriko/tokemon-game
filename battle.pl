@@ -8,9 +8,9 @@
 :- include('player.pl').
 
 :- dynamic(current_tokemon1/4). 
-/*id tokemon kita, c_health, lvl*/
+/*id tokemon kita, c_health, lvl, nattack*/
 :- dynamic(current_tokemon2/4). 
-/*id tokemon musuh, c_health, lvl*/
+/*id tokemon musuh, c_health, lvl, nattack*/
 
 digym(0).
 udahheal(0).
@@ -42,9 +42,14 @@ tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,
 
 pick(X) :- battle_status(0),pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
 
-pick(X) :-  battle_status(1),pick_time(1),
+pick(X) :-  battle_status(1), pick_time(1),
             \+check_inv(X), write('Kamu tidak memiliki Tokemon itu!'),nl,
             write('pilih Tokemon lain!'),nl,!.
+
+pick(X) :-
+        inventory(X,H,A,_,_,_,Z),
+        current_tokemon1(Z,H,),
+        
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
