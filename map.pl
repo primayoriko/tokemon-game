@@ -148,8 +148,16 @@ posi :-
     write(X), nl,
     write(Y), ! .
 
+    
+n:-
+    (lagi_ketemu(1);battle_status(1)),
+    write('lagi ada pokemon jgn caw dong'),nl, !.
+
+
 n :-
-    lagi_ketemu(0),
+    tangkaptime(J),
+    retract(tangkaptime(J)),asserta(tangkaptime(0)),
+    (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
     player_position(X,Y),
     Y > 1,
 	Y2 is Y-1,
@@ -164,12 +172,14 @@ n :-
     write('nabrak bray'),nl,
     !.
 
-n:-
+s :-
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 s :-
-    lagi_ketemu(0),
+    tangkaptime(J),
+    retract(tangkaptime(J)),asserta(tangkaptime(0)),
+    (J =:= 1 -> (write('u have left the pokemon'),(current_tokemon2(L,K,O,P),retract(current_tokemon2(L,K,O,P))),nl) ; nl),
     player_position(X,Y),
     tinggiPeta(YY),
 	Y < YY,
@@ -188,7 +198,9 @@ s :-
     write('nabrak bray'),nl,
     !.
 
-s :-
+
+
+e:-
     (lagi_ketemu(1);battle_status(1)),
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
@@ -201,7 +213,9 @@ e :-
     !.
 
 e :-
-    lagi_ketemu(0),
+    tangkaptime(J),
+    retract(tangkaptime(J)),asserta(tangkaptime(0)),
+    (J =:= 1 -> (write('u have left the pokemon'),(current_tokemon2(L,K,O,P),retract(current_tokemon2(L,K,O,P))),nl) ; nl),
     player_position(X,Y),
     lebarPeta(XX),
 	X < XX,
@@ -212,9 +226,6 @@ e :-
 	asserta(player_position(X2,Y2)),
     roll, !.
 
-e:-
-    (lagi_ketemu(1);battle_status(1)),
-    write('lagi ada pokemon jgn caw dong'),nl, !.
 
 w :-
     player_position(X,_),
@@ -227,7 +238,9 @@ w:-
     write('lagi ada pokemon jgn caw dong'),nl, !.
 
 w :-
-    lagi_ketemu(0),
+    tangkaptime(J),
+    retract(tangkaptime(J)),asserta(tangkaptime(0)),
+    (J =:= 1 -> (write('u have left the pokemon'),nl) ; nl),
     player_position(X,Y),
 	X > 1,
 	Y2 is Y,
@@ -267,7 +280,10 @@ battletest(X) :-
     write('fight or run?'),nl,!.
 
 pick(X) :-
+    battle_status(1),
+    pick_time(1),
     inventory(X,B,C,D,E,F,G),
     write('anda memilih '), write(X),nl,
     asserta(current_tokemon1(G,B,1,C)),
+    retract(pick_time(1)), assert(pick_time(0)),
     tulis_battle.
