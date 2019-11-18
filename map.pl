@@ -106,7 +106,7 @@ heal :-
 printMap(X,Y) :-
     player_position(X,Y), !, write('P').
 printMap(X,Y) :-
-    legendary_place(X,Y,_), !, write('L').
+    isLegendary(X,Y), !, write('L').
 printMap(X,Y) :-
     isGym(X,Y), !, write('G').
 printMap(X,Y) :-
