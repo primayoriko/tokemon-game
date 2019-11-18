@@ -127,9 +127,18 @@ printMap(_,_) :-
 generateRintangan :-
     lebarPeta(X),
     tinggiPeta(Y),
-    random(2,X,A),
-    random(2,Y,B),
-    asserta(rintangan(A,B)),!.
+    XMin is 2,
+	XMax is X,
+	YMin is 2,
+    YMax is Y,
+    Sum is round(X*Y/10),
+        
+    forall(between(1,Sum,_), (
+        random(XMin,XMax, A),
+        random(YMin,YMax, B),
+        asserta(rintangan(A,B))
+        )),
+    !.
 
 printTheWholeMap :-
     lebarPeta(X),
