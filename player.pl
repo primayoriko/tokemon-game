@@ -3,13 +3,15 @@
 :- dynamic(inventory/7).                
 :- dynamic(maxInventory/1).             
 :- dynamic(gameMain/1).
-:- dynamic(jumlapokemon/1).
 
 /* inventory(nama, current health, nattack, sattack, namasatack, type, id) */
 /* maxInventory(Maks) */
 
 :- include('tokemon.pl').
 :- include('utility.pl').
+
+init_inventory:- 
+
 
 
 check_inv(X):-

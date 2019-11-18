@@ -48,8 +48,12 @@ pick(X) :-  battle_status(1), pick_time(1),
 
 pick(X) :-
         inventory(X,H,A,_,_,_,Z),
-        current_tokemon1(Z,H,),
-        
+        assert(current_tokemon1(Z,H,_,A)),
+        random(1,12,R),
+        tokemon(Xe,He,Ae,_,_,_,R),
+        current_tokemon2(X,)
+
+
 
 see_result(X, Y) :-
             /* melihat outcome dari battle */
