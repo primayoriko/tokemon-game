@@ -197,8 +197,28 @@ save(FileName):-
 		forall(current_tokemon2(X,Y,Z,W),(write(current_tokemon2(X,Y,Z,W)),write('.'),nl)),
 	told, !.
 
+load(_) :-
+	game_status(1),
+	write('Kamu tidak bisa memulai game lainnya ketika ada game yang sudah dimulai.'), nl, !.
+    
+load(FN):-
+	\+exists_file(FN),
+	write('File tersebut tidak ada.'), nl, !.
 
-loads(_) :-
+load(FN):-
+	retractall(game_status(_)),
+    open(FN, read, Str),
+  	read_file(Str,Lines),
+  	close(Str),
+	assertaList(Lines),
+  	write('File has been loaded!'), nl.
+
+read_file(Stream, Lines) :-
+    read(Stream, Line),               
+    ( at_end_of_stream(Stream) -> Lines = [] ;  Lines = [Line|NewLines],       
+       read_file(Stream, NewLines)).
+
+/*loads(_) :-
 	game_status(1),
 	write('Kamu tidak bisa memulai game lainnya ketika ada game yang sudah dimulai.'), nl, !.
     
@@ -211,3 +231,4 @@ loads(FileName):-
     read_file_lines(Str,Lines),
     close(Str),
     assertaList(Lines), !.
+*/
