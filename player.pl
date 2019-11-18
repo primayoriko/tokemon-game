@@ -29,7 +29,7 @@ init_player :-
 	asserta(maxInventory(0)),
 	asserta(lagi_ketemu(0)),
 	asserta(battle_status(0)),
-	write('Generating your own tokemon....'),nl,
+	write('Prof. Rila memberikanmu tokemon! Silahkan cek inventory-mu!'),nl,
 	generateTokemon,generateTokemon,!.
 
 addToInventory(Tokemon) :-
@@ -51,6 +51,6 @@ delFromInventory(Tokemon) :-
 generateTokemon :-
 	random(1,12,X),
 	tokemon(Tokemon,_,_,_,_,_,X,_),
-	write('Adding '),write(Tokemon),write(' to your inventory!'),nl,
+	write(Tokemon),write(' added to your inventory!'),nl,
 	addToInventory(Tokemon),
 	!.
