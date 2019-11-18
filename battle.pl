@@ -11,7 +11,6 @@
 :- dynamic(current_tokemon2/4). 
 /*id tokemon musuh, c_health, lvl, nattack*/
 
-digym(0).
 udahheal(0).
 tangkaptime(0).
 pick_time(0).
@@ -35,9 +34,12 @@ run :-  lagi_ketemu(1),
         retract(lagi_ketemu(1)),asserta(lagi_ketemu(0)),
         retract(current_tokemon2(A,B,C,D)), !.
 
+tulis_battle :- battle_status(0),
+                write(' kamu ngga lg bertempur mas!'), nl, !.
+
 tulis_battle :-  tokemon(A,_,_,_,_,C,X), current_tokemon1(X,D,_,_), tokemon(B,_,_,_,_,E,Y), current_tokemon2(Y,F,_,_), 
-                    write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
-                    write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,!.
+                 write(A),nl, write('Health: '), write(D),nl, write('Type: '), write(C),nl,nl,
+                 write(B),nl, write('Health: '), write(F),nl, write('Type: '), write(E),nl,!.
 
 pick(X) :- pick_time(0), write('Tidak ada pertarungan saat ini'),nl,!.
 
@@ -89,11 +91,13 @@ calc_health :-
             (assert(current_tokemon1(X1,E,Y1)), assert(current_tokemon1(X1,F,Y1)))),
             tulis_battle,
             see_result.
+
 /*currentTokemon(id,health,lvl,na)*/
 /*tokemon(nama,max health, nattack,sattack,namasatack,type,id)*/
+attack :-  battle_status(0),
+           write('klo ga berantem mau nyerang siapa?!!'), nl, !.
 
 attack :-
-            battle_status(1),
             current_tokemon1(A,B,C,D), current_tokemon2(E,F,G,H),
             B2 is B - H, F2 is F-D, 
             ((B2 >0, F2 > 0) ->
