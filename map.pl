@@ -132,9 +132,10 @@ generateLegendary:-
     YMax is Y,
 
     forall(between(13,17,R), (
+        tokemon(N,_,_,_,_,_,R,_),
         random(XMin,XMax, A),
         random(YMin,YMax, B),
-        assert(posisiLegendary(R,A,B))
+        assert(posisiLegendary(N,A,B))
         )),
     !.
 
