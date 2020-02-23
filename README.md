@@ -8,10 +8,10 @@ This is an turn-based game and you can catch tokemon all-around the map.
 -----------------
 To start playing, just run start.pl
 
-##Requirement
+## Requirement
 -----------------
 1. Have swi-prolog or gnu-prolog installed
 
-##Issue
+## Issue
 ------------------
 You can't play in linux, only can play in Windows, the cause haven't been found
